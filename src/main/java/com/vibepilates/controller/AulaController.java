@@ -40,6 +40,27 @@ public class AulaController {
 
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Aula aula) {
+        if (aula.getIdUsuarioAluno() == null || aula.getIdUsuarioProfessor() == null ||
+            aula.getDataInicio() == null || aula.getDataFim() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("❌ Aluno, professor, data de início e fim são obrigatórios.");
+        }
+
+        List<Aula> conflitos = repository.findAll().stream()
+                .filter(a -> a.getIdUsuarioProfessor().equals(aula.getIdUsuarioProfessor()) &&
+                        a.getDataFim().after(aula.getDataInicio()) &&
+                        a.getDataInicio().before(aula.getDataFim()))
+                .toList();
+
+        if (!conflitos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("❌ Já existe uma aula marcada com esse professor nesse horário.");
+        }
+
+        if (aula.getStatus() == null || aula.getStatus().isEmpty()) {
+            aula.setStatus("pendente");
+        }
+
         repository.save(aula);
         return ResponseEntity.status(HttpStatus.CREATED).body("✅ Aula criada com sucesso!");
     }

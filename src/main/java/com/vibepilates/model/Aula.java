@@ -13,11 +13,11 @@ public class Aula {
 
     private String idUsuarioAluno;
     private String idUsuarioProfessor;
-    private Date data;
+    private Date dataInicio;
+    private Date dataFim;
     private String status;
 
-    public Aula() {
-    }
+    public Aula() {}
 
     public String getIdAula() {
         return idAula;
@@ -43,12 +43,20 @@ public class Aula {
         this.idUsuarioProfessor = idUsuarioProfessor;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDataInicio() {
+        return dataInicio;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
     }
 
     public String getStatus() {
