@@ -35,7 +35,7 @@ public class UsuarioController {
         List<Usuario> usuarios = repository.findAll();
         if (usuarios.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("❌ Nenhum usuário encontrado.");
+                    .body(Map.of("error", "❌ Nenhum usuário encontrado."));
         }
         return ResponseEntity.ok(usuarios);
     }
@@ -47,37 +47,38 @@ public class UsuarioController {
             return ResponseEntity.ok(usuario.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("❌ Usuário com ID " + id + " não encontrado.");
+                    .body(Map.of("error", "❌ Usuário com ID " + id + " não encontrado."));
         }
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Usuario usuario) {
+    public ResponseEntity<Map<String, String>> create(@RequestBody Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         repository.save(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body("✅ Usuário criado com sucesso!");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("mensagem", "✅ Usuário criado com sucesso!"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable String id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Map<String, String>> update(@PathVariable String id, @RequestBody Usuario usuario) {
         if (!repository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("❌ Usuário com ID " + id + " não encontrado.");
+                    .body(Map.of("error", "❌ Usuário com ID " + id + " não encontrado."));
         }
         usuario.setIdUsuario(id);
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         repository.save(usuario);
-        return ResponseEntity.ok("✅ Usuário atualizado com sucesso!");
+        return ResponseEntity.ok(Map.of("mensagem", "✅ Usuário atualizado com sucesso!"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable String id) {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("❌ Usuário com ID " + id + " não encontrado.");
+                    .body(Map.of("error", "❌ Usuário com ID " + id + " não encontrado."));
         }
         repository.deleteById(id);
-        return ResponseEntity.ok("✅ Usuário deletado com sucesso!");
+        return ResponseEntity.ok(Map.of("mensagem", "✅ Usuário deletado com sucesso!"));
     }
 
     @PostMapping("/login")
@@ -87,24 +88,24 @@ public class UsuarioController {
 
         if (email == null || senha == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "Email e senha são necessários para o login."));
+                    .body(Map.of("error", "❌ Email e senha são necessários para o login."));
         }
 
         Optional<Usuario> optionalUsuario = repository.findByEmail(email);
         if (optionalUsuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Email inválido."));
+                    .body(Map.of("error", "❌ Email inválido."));
         }
 
         Usuario usuario = optionalUsuario.get();
 
         if (!passwordEncoder.matches(senha, usuario.getSenha())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Senha incorreta."));
+                    .body(Map.of("error", "❌ Senha incorreta."));
         }
         
         Map<String, Object> response = Map.of(
-            "message", "Login bem-sucedido.",
+            "message", "✅ Login bem-sucedido.",
             "usuario", Map.of(
                 "idUsuario", usuario.getIdUsuario(),
                 "nome", usuario.getNome(),
@@ -113,5 +114,28 @@ public class UsuarioController {
         );
 
         return ResponseEntity.ok(response);
+    }
+    
+    @PostMapping("/recuperar-senha")
+    public ResponseEntity<?> recuperarSenha(@RequestBody Map<String, String> dados) {
+        String email = dados.get("email");
+        String novaSenha = dados.get("novaSenha");
+
+        if (email == null || novaSenha == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "❌ Email e nova senha são obrigatórios."));
+        }
+
+        Optional<Usuario> optionalUsuario = repository.findByEmail(email);
+        if (optionalUsuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "❌ Usuário com email " + email + " não encontrado."));
+        }
+
+        Usuario usuario = optionalUsuario.get();
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        repository.save(usuario);
+
+        return ResponseEntity.ok(Map.of("mensagem", "✅ Senha atualizada com sucesso."));
     }
 }

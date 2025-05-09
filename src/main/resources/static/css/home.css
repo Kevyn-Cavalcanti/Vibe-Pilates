@@ -1,0 +1,48 @@
+.home {
+    background-image: url(../images/gradiente.png);
+    background-size: cover;
+    background-position: 0% 0%;
+}
+
+
+.btn {
+    background-color: #0A0A0A;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 30px;
+    width: 40%;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    outline: none;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+    transition: 0.3s;
+    background-color: #1E1E1E;
+}
+
+.btn:hover .paragrafo{
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+
+.paragrafo {
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    padding: 270px 0px;
+    background-image: url(../images/fundo.png);
+    background-size: cover 150%;
+    background-position: 50% 20%;
+
+}
+
+.p {
+    font-size: 2.5rem;
+    font-weight: 900;
+}

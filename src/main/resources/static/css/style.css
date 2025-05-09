@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+/* Configurações gerais */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+:root {
+	--black-color: #0a0a0a;
+	--white-color: #f8f8f8;
+	--secondary-color: #1E1E1E;
+	--complementary-color: #2A2A37;
+	--bg-color: #a4a4a4;
+	--destaque-color: #15dc5b;
+	--erro-color: #df0e0e;
+	--transition: 0.3s;
+	font-family: "Rajdhani", sans-serif;
+}
+
+body {
+	background-color: var(--bg-color);
+	color: var(--white-color);
+	height: 100vh;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 2rem;
+}
+
+#app {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background-color: #0A0A0A;
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.529); */
+    padding: 60px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: white;
+}
+
+/* nav principal */
+.nav-main {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    background-color: #1E1E1E;
+    padding: 10px 8%;
+    box-sizing: border-box;
+    max-width: 100vw;
+    font-size: 1rem;
+    color: white;
+}
+
+
+.info-nav-main {
+    display: flex;
+    align-items: center;
+}
+
+/* nav-list com <ul> */
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 300px;
+}
+
+.nav-list > li {
+    position: relative;
+}
+
+/* botões */
+.navbtn {
+    background: none;
+    border: none;
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    font-size: 1.4rem;
+    display: inline-block;
+}
+
+.navbtn:hover {
+    cursor: pointer;
+    color: #ababab;
+}
+
+Footer{
+    display: flex;
+	position: sticky;
+    flex-direction: row;
+    background-color: #0A0A0A;
+    height: 100px;
+    width: 100%;
+    color: white;
+    font-size: 1rem;
+    justify-content: space-evenly;
+	bottom: 0;
+}
+
+.List-Footer{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
