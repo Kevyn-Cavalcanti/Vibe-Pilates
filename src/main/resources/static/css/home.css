@@ -1,13 +1,13 @@
 .home {
-    background-image: url(../images/gradiente.png);
+    /* background-image: url(../images/gradiente.png); */
     background-size: cover;
     background-position: 0% 0%;
 }
 
 
 .btn {
-    background-color: #0A0A0A;
-    color: #fff;
+    background-color: var(--black-color);
+    color: var(--white-color);
     font-size: 1.8rem;
     font-weight: 600;
     padding: 30px;
@@ -17,12 +17,12 @@
     cursor: pointer;
     margin: 0;
     outline: none;
+    transition: var(--transition);
 }
 
 .btn:hover {
     transform: scale(1.1);
-    transition: 0.3s;
-    background-color: #1E1E1E;
+    transition: var(--transition);
 }
 
 .btn:hover .paragrafo{
@@ -36,13 +36,16 @@
     align-content: center;
     width: 100%;
     padding: 270px 0px;
-    background-image: url(../images/fundo.png);
-    background-size: cover 150%;
-    background-position: 50% 20%;
+    /* background-image: url(../images/fundo.png); */
+    /* background-size: cover 150%;
+    background-position: 50% 20%; */
 
 }
 
-.p {
+.title-home {
     font-size: 2.5rem;
     font-weight: 900;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--black-color);
 }

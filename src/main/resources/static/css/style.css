@@ -9,9 +9,10 @@ html {
 :root {
 	--black-color: #0a0a0a;
 	--white-color: #f8f8f8;
+    --hover-color: #ababab;
 	--secondary-color: #1E1E1E;
 	--complementary-color: #2A2A37;
-	--bg-color: #a4a4a4;
+	--bg-color: #D9D9D9;
 	--destaque-color: #15dc5b;
 	--erro-color: #df0e0e;
 	--transition: 0.3s;
@@ -26,9 +27,13 @@ body {
 
 .container {
 	width: 100%;
+    min-height: calc(100vh - 170px);
 	display: flex;
 	flex-direction: column;
 	padding: 2rem;
+    background-image: url(../images/fundo.png);
+    background-size: 100% 100%;
+    background-position: 0% 0%;
 }
 
 #app {
@@ -43,12 +48,12 @@ body {
     align-items: center;
     height: 40px;
     width: 100%;
-    background-color: #0A0A0A;
+    background-color: var(--black-color);
     /* border-bottom: 1px solid rgba(255, 255, 255, 0.529); */
     padding: 60px;
     box-sizing: border-box;
     font-size: 1rem;
-    color: white;
+    color: var(--white-color);
 }
 
 /* nav principal */
@@ -58,12 +63,12 @@ body {
     align-items: center;
     width: 100%;
     height: 50px;
-    background-color: #1E1E1E;
+    background-color: var(--secondary-color);
     padding: 10px 8%;
     box-sizing: border-box;
     max-width: 100vw;
     font-size: 1rem;
-    color: white;
+    color: var(--white-color);
 }
 
 
@@ -91,7 +96,7 @@ body {
     background: none;
     border: none;
     text-decoration: none;
-    color: white;
+    color: var(--white-color);
     padding: 10px;
     font-size: 1.4rem;
     display: inline-block;
@@ -99,17 +104,16 @@ body {
 
 .navbtn:hover {
     cursor: pointer;
-    color: #ababab;
+    color: var(--hover-color);
 }
 
 Footer{
     display: flex;
-	position: sticky;
     flex-direction: row;
-    background-color: #0A0A0A;
+    background-color: var(--black-color);
     height: 100px;
     width: 100%;
-    color: white;
+    color: var(--white-color);
     font-size: 1rem;
     justify-content: space-evenly;
 	bottom: 0;
