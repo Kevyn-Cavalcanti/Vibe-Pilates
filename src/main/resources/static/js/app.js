@@ -16,6 +16,18 @@ const router = VueRouter.createRouter({
     routes
 });
 
+router.afterEach((to) => {
+    const mainElement = document.querySelector('body');
+
+    if (mainElement) {
+        if (to.path === '/' || to.path === '/home') {
+            mainElement.classList.add('image-background');
+        } else {
+            mainElement.classList.remove('image-background');
+        }
+    }
+});
+
 const app = {
     data() {
         return {
@@ -50,7 +62,7 @@ const app = {
         <div>
             <img class='Img-Footer' src="" alt="" />
             <ul class='List-Footer'>
-                <li>(**) *****-****</li>
+                <li>(11) 12345-6789</li>
             </ul>
         </div>
         <div>

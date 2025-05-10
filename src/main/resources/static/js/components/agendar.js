@@ -7,7 +7,7 @@ export const Agendar = {
     },
     template: `
     <section class="agendar">
-        <h1>Agendar</h1>
+        <h1 class="title-agendar">Agendar (em andamento)</h1>
     </section>
     `,
 };

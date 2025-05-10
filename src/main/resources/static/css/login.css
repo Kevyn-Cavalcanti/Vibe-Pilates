@@ -11,7 +11,7 @@
   align-items: center;
   align-content: center;
   gap: 1.5rem;
-  min-height: calc(100vh - 170px);
+  min-height: calc(100vh - 180px);
 }
 
 .wraper {
