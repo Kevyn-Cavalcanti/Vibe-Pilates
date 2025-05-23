@@ -1,8 +1,11 @@
 package com.vibepilates.controller;
-
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,14 +64,30 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, String>> update(@PathVariable String id, @RequestBody Usuario usuario) {
-        if (!repository.existsById(id)) {
+        Optional<Usuario> usuarioExistenteOpt = repository.findById(id);
+        if (usuarioExistenteOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("error", "❌ Usuário com ID " + id + " não encontrado."));
         }
-        usuario.setIdUsuario(id);
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        repository.save(usuario);
+
+        Usuario usuarioExistente = usuarioExistenteOpt.get();
+
+        BeanUtils.copyProperties(usuario, usuarioExistente, getNullPropertyNames(usuario));
+
+        if (usuario.getSenha() != null) {
+            usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+
+        repository.save(usuarioExistente);
         return ResponseEntity.ok(Map.of("mensagem", "✅ Usuário atualizado com sucesso!"));
+    }
+
+    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        return Arrays.stream(src.getPropertyDescriptors())
+                .map(pd -> pd.getName())
+                .filter(propertyName -> src.getPropertyValue(propertyName) == null)
+                .toArray(String[]::new);
     }
 
     @DeleteMapping("/{id}")
