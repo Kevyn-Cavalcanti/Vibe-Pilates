@@ -82,7 +82,7 @@
 }
 
 .chat-icon i {
-    padding-top: 10px;
+    padding-top: 5px;
     color: var(--white-color);
     font-size: 1.5rem;
 }
@@ -90,4 +90,140 @@
 .chat-icon:hover {
     transform: scale(1.1);
     transition: var(--transition);
+}
+
+/* ----------------------------------------------------------- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  position: relative;
+  width: 500px;
+  max-width: 100%;
+  background-color: var(--secondary-color);
+  border-radius: 6px;
+  padding: 40px 32px 35px;
+  border: solid 1px var(--black-color);
+  box-shadow: 0 8px 15px var(--black-color);
+  color: var(--black-color);
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.title-cadastro-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: var(--white-color);
+}
+
+.fechar-modal {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  color: var(--white-color);
+  cursor: pointer;
+}
+
+.voltar-modal {
+  position: absolute;
+  top: -18px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--white-color);
+  cursor: pointer;
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 35px 0;
+}
+
+.tel {
+    left: 55px;
+}
+
+.num {
+    left: 54px;
+}
+
+.comple {
+    left: 77px;
+}
+
+.bairro {
+    left: 47px;
+}
+
+.cid {
+    left: 50px;
+}
+
+.est {
+    left: 50px;
+}
+
+.input-box.filled .label,
+.input-field:focus ~ .label {
+  top: -7px;
+  font-size: 14px;
+  color: var(--white-color);
+  border-radius: 0 0 6px 6px;
+  background-color: var(--secondary-color);
+  padding: 0 10px;
+}
+
+.btn-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 55px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: var(--black-color);
+  color: var(--white-color);
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding-top: 5px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-submit:hover {
+  gap: 15px;
+}
+
+.btn-submit i {
+  font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 564px) {
+  .modal-content {
+    margin: 20px;
+  }
 }

@@ -3,6 +3,7 @@ package com.vibepilates.model;
 public class Endereco {
     private String rua;
     private String numero;
+    private String complemento;
     private String bairro;
     private String cidade;
     private String estado;
@@ -24,6 +25,14 @@ public class Endereco {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+    
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 
     public String getBairro() {
