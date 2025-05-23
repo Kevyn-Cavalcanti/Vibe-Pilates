@@ -31,23 +31,55 @@ export const Agendar = {
       this.polos = polos;
     },
     async marcarAula(polo) {
-	  const id = localStorage.getItem("usuarioId");
+      const id = localStorage.getItem("usuarioId");
       const resposta = await fetch(`/usuario/${id}`);
-	  const dados = await resposta.json();
-	  if (dados.endereco == null) {
-		this.mostrarFormulario = true;
-		this.etapaFormulario = 1;
-	  } else {
-	    console.log('já tem, segue com polo');
-	  }
+      const dados = await resposta.json();
+      if (dados.endereco == null) {
+        this.mostrarFormulario = true;
+        this.etapaFormulario = 1;
+      } else {
+        console.log('já tem, segue com polo');
+      }
     },
     avancarEtapa() {
       this.etapaFormulario = 2;
     },
-    finalizarCadastro() {
-      console.log("Dados enviados:", this.cadastroCompleto);
-      alert("Cadastro finalizado com sucesso!");
-      this.mostrarFormulario = false;
+    async finalizarCadastro() {
+      const id = localStorage.getItem("usuarioId");
+
+      const payload = {
+        telefone: this.cadastroCompleto.telefone,
+        cpf: this.cadastroCompleto.cpf,
+        endereco: {
+          cep: this.cadastroCompleto.cep,
+          rua: this.cadastroCompleto.rua,
+          numero: this.cadastroCompleto.numero,
+          complemento: this.cadastroCompleto.complemento,
+          bairro: this.cadastroCompleto.bairro,
+          cidade: this.cadastroCompleto.cidade,
+          estado: this.cadastroCompleto.estado,
+        }
+      };
+
+      try {
+        const resposta = await fetch(`/usuario/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!resposta.ok) {
+          throw new Error('Erro ao atualizar os dados do usuário.');
+        }
+
+        alert("Cadastro finalizado com sucesso!");
+        this.mostrarFormulario = false;
+      } catch (erro) {
+        console.error(erro);
+        alert("❌ Ocorreu um erro ao salvar os dados. Tente novamente.");
+      }
     },
     fecharFormulario() {
       this.mostrarFormulario = false;
