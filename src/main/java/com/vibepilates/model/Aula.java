@@ -10,7 +10,6 @@ public class Aula {
 
     @Id
     private String idAula;
-
     private String idUsuarioAluno;
     private String idUsuarioProfessor;
     private Date dataInicio;
