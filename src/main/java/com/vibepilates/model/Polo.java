@@ -1,5 +1,7 @@
 package com.vibepilates.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +12,9 @@ public class Polo {
     private String idPolo;
     private String idUsuario;
     private String nome; 
-    private Endereco endereco; 
+    private Endereco endereco;
+    private List<String> datahoradisponiveis;//["Segunda", "Terça"]
+    private String planoeprecodisponiveis;//"Mensal", "Trimestral", "Semestral", "Anual".
 
     public Polo() {
     }
@@ -45,5 +49,21 @@ public class Polo {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+    
+    public List<String> getDiasDisponiveis() {
+        return datahoradisponiveis;
+    }
+
+    public void setDiasDisponiveis(List<String> datahorapreferida) {
+        this.datahoradisponiveis = datahorapreferida;
+    }
+
+    public String getPlano() {
+        return planoeprecodisponiveis;
+    }
+
+    public void setPlano(String plano) {
+        this.planoeprecodisponiveis = plano;
     }
 }
