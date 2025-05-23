@@ -38,11 +38,18 @@ export const Login = {
         .then(data => {
           this.erroLogin = '';
           localStorage.setItem("token", data.token);
+          localStorage.setItem("usuarioId", data.usuario.id); // <-- Salvando ID do usuário
           this.$router.push('/home');
         })
         .catch(error => {
           this.erroLogin = error.message;
         });
+        const valor = localStorage.getItem('chave');
+if (valor !== null) {
+  console.log('sim');
+} else {
+  console.log('nao.');
+}
     },
     criarUsuario() {
       if (this.cadastro.senha !== this.cadastro.confirmarSenha) {
