@@ -43,17 +43,13 @@ const app = {
                 <h1>Pilates Site</h1>
             </div>
         </div>
-        </div>
-
-        <div class="nav-main" v-if="$route.path !== '/' && $route.path !== '/login'">
-            <nav class="info-nav-main">
+            <nav class="nav-main" v-if="$route.path !== '/' && $route.path !== '/login'">
                 <ul class="nav-list">
                     <li><router-link to="/home" class="navbtn">Home</router-link></li>
                     <li><router-link to="/agendar" class="navbtn">Agendar Aula</router-link></li>
                     <li><router-link to="/conta" class="navbtn">Conta</router-link></li>
                 </ul>
             </nav>
-        </div>
     </header>
 	<main class="container">
 		<router-view></router-view>

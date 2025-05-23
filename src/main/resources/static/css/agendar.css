@@ -5,3 +5,89 @@
     border-bottom: solid 1px var(--black-color);
     padding-bottom: 10px;
 }
+
+.div-cards {
+    justify-items: center;
+}
+
+.cards {
+    margin-top: 50px;
+    width: 80%;
+    overflow-y: scroll;
+    height: 650px;
+    border-radius: 10px;
+}
+
+.cards::-webkit-scrollbar {
+    display: none;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 10px;
+}
+
+.polo {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 30px 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.polo h3 {
+    font-size: 1.5rem;
+    color: var(--white-color);
+    font-weight: 500;
+}
+
+.marcar-btn {
+    border-radius: 10px;
+    background-color: var(--white-color);
+    border: none;
+    font-size: 1.2rem;
+    width: 16rem;
+    height: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.marcar-btn:hover {
+    background-color: var(--black-color);
+    color: var(--white-color);
+    transition: var(--transition);
+}
+
+.chat-icon {
+    background-color: var(--black-color);
+    border-radius: 100%;
+    border: 0;
+    width: 5.1rem;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.chat-icon i {
+    padding-top: 10px;
+    color: var(--white-color);
+    font-size: 1.5rem;
+}
+
+.chat-icon:hover {
+    transform: scale(1.1);
+    transition: var(--transition);
+}
