@@ -15,7 +15,7 @@ public class Usuario {
     private String telefone;
     private String senha;
     private String tipo;
-    private String endereco;
+    private Endereco endereco;
     private String cpf;
     private boolean estado;
     private Date dataCad;
@@ -72,20 +72,20 @@ public class Usuario {
         this.tipo = tipo;
     }
     
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+    
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     public boolean isEstado() {
