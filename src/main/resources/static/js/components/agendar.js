@@ -3,6 +3,7 @@ export const Agendar = {
     return {
       polos: [],
       mostrarFormulario: false,
+      mostrarMensagem: false,
       etapaFormulario: 1,
       cadastroCompleto: {
         telefone: '',
@@ -35,16 +36,18 @@ export const Agendar = {
       const resposta = await fetch(`/usuario/${id}`);
       const dados = await resposta.json();
       if (dados.endereco == null) {
-        this.mostrarFormulario = true;
+        this.mostrarMensagem = true;
         this.etapaFormulario = 1;
       } else {
         console.log('já tem, segue com polo');
+        this.$router.push(`/agendar/${polo.idPolo}`);
       }
     },
     avancarEtapa() {
       this.etapaFormulario = 2;
     },
     async finalizarCadastro() {
+      this.mostrarMensagem = false;
       const id = localStorage.getItem("usuarioId");
 
       const payload = {
@@ -83,6 +86,7 @@ export const Agendar = {
     },
     fecharFormulario() {
       this.mostrarFormulario = false;
+      this.mostrarMensagem = false;
       this.etapaFormulario = 1;
       this.cadastroCompleto = {
         telefone: '',
@@ -181,6 +185,19 @@ export const Agendar = {
       </div>
     </div>
 
+        <!-- Modal de mensagem -->
+      <div v-if="mostrarMensagem && !mostrarFormulario" class="modal-overlay">
+        <div class="modal-content-msg">
+          <i id="icon-msg" class="fi fi-rr-info"></i>
+          <p id="msg-modal">Quase lá!</p>
+          <p>Antes de dar início à sua matrícula, precisamos só de algumas informações do seu perfil.</p>
+          <div class="btns-msg">
+            <button @click="mostrarMensagem = false">Fechar</button>
+            <button id="btn-prosseguir" @click="mostrarFormulario = true">Prosseguir</button>
+          </div>
+        </div>
+      </div>
+
     <!-- Modal do formulário -->
     <div class="modal-overlay" v-if="mostrarFormulario">
       <div class="modal-content wraper">
@@ -208,7 +225,7 @@ export const Agendar = {
               <i class="fi fi-rr-id-card-clip-alt" id="icon-login"></i>
             </div>
 
-            <button class="btn-submit" type="submit">Avançar</button>
+            <button class="btn-form" type="submit">Avançar</button>
           </div>
 
           <!-- Etapa 2 -->
@@ -267,7 +284,7 @@ export const Agendar = {
               <i class="fi fi-rr-globe" id="icon-login"></i>
             </div>
 
-            <button class="btn-submit" type="submit">Finalizar Matrícula</button>
+            <button class="btn-form" type="submit">Finalizar Matrícula</button>
           </div>
         </form>
       </div>
