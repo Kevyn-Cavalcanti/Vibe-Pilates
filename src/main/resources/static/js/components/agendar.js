@@ -30,9 +30,16 @@ export const Agendar = {
 
       this.polos = polos;
     },
-    marcarAula(polo) {
-      this.mostrarFormulario = true;
-      this.etapaFormulario = 1;
+    async marcarAula(polo) {
+	  const id = localStorage.getItem("usuarioId");
+      const resposta = await fetch(`/usuario/${id}`);
+	  const dados = await resposta.json();
+	  if (dados.endereco == null) {
+		this.mostrarFormulario = true;
+		this.etapaFormulario = 1;
+	  } else {
+	    console.log('já tem, segue com polo');
+	  }
     },
     avancarEtapa() {
       this.etapaFormulario = 2;

@@ -25,32 +25,35 @@ export const Login = {
     };
   },
   methods: {
-    fazerLogin() {
-      fetch("http://localhost:8080/usuario/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(this.login)
-      })
-        .then(response => {
-          if (!response.ok) throw new Error("Usuário ou senha inválidos. Tente novamente.");
-          return response.json();
-        })
-        .then(data => {
-          this.erroLogin = '';
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("usuarioId", data.usuario.id); // <-- Salvando ID do usuário
-          this.$router.push('/home');
-        })
-        .catch(error => {
-          this.erroLogin = error.message;
-        });
-        const valor = localStorage.getItem('chave');
-if (valor !== null) {
-  console.log('sim');
-} else {
-  console.log('nao.');
-}
-    },
+	fazerLogin() {
+	  fetch("http://localhost:8080/usuario/login", {
+	    method: "POST",
+	    headers: { "Content-Type": "application/json" },
+	    body: JSON.stringify(this.login)
+	  })
+	    .then(response => {
+	      if (!response.ok) throw new Error("Usuário ou senha inválidos. Tente novamente.");
+	      return response.json();
+	    })
+	    .then(data => {
+	      this.erroLogin = '';
+	      localStorage.setItem("usuarioId", data.usuario.idUsuario);
+	      localStorage.setItem("usuarioNome", data.usuario.nome);
+	      localStorage.setItem("usuarioEmail", data.usuario.email);
+	      this.$router.push('/home');
+		  this.$router.replace('/home');
+		  
+	      const valor = localStorage.getItem("usuarioId");
+	      if (valor !== null) {
+	        console.log(localStorage.getItem("usuarioId"));
+	      } else {
+	        console.log('nao.');
+	      }
+	    })
+	    .catch(error => {
+	      this.erroLogin = error.message;
+	    });
+	},
     criarUsuario() {
       if (this.cadastro.senha !== this.cadastro.confirmarSenha) {
         this.erroCadastro = "As senhas devem ser iguais.";

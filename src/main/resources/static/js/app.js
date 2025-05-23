@@ -16,6 +16,27 @@ const router = VueRouter.createRouter({
     routes
 });
 
+function sair() {
+  localStorage.removeItem("usuarioId");
+  localStorage.removeItem("usuarioNome");
+  localStorage.removeItem("usuarioEmail");
+}
+
+router.beforeEach((to, from, next) => {
+  const id = localStorage.getItem("usuarioId");
+
+  if (!id && to.path !== '/') {
+    next('/');
+  } else if (id && to.path === '/') {
+    next('/home');
+  } else if (!id && to.path === '/') {
+    sair();
+    next();
+  } else {
+    next();
+  }
+});
+
 router.afterEach((to) => {
     const mainElement = document.querySelector('body');
 
