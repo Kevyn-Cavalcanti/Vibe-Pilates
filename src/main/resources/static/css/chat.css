@@ -1,0 +1,145 @@
+/* Container geral centrado vertical e horizontalmente */
+.chat-wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Área principal do chat */
+#chat-area {
+  width: 750px;
+  height: 700px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #f7f7f7, #ffffff);
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+/* Cabeçalho do chat */
+#chat-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #ccc;
+  background: #f7f7f7;
+}
+
+/* Botão de fechar */
+#chat-header button {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+/* Nome do usuário no cabeçalho */
+#chat-with-name {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+/* Lista de mensagens */
+#message-list {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background: linear-gradient(to bottom, #f9f9f9, #ffffff);
+  font-size: 17px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mensagem individual */
+.message {
+  max-width: 80%;
+  margin: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+
+/* Mensagem enviada pelo usuário */
+.message.sent {
+  align-items: flex-end;
+  align-self: flex-end;
+}
+
+/* Mensagem recebida */
+.message.received {
+  align-items: flex-start;
+  align-self: flex-start;
+}
+
+/* Nome do remetente na mensagem */
+.sender-name {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #555;
+}
+
+/* Balão da mensagem */
+.bubble {
+  padding: 16px 22px;
+  border-radius: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Balão de mensagem enviada */
+.message.sent .bubble {
+  background-color: #0a0a0a;
+  color: white;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 18px;
+}
+
+/* Balão de mensagem recebida */
+.message.received .bubble {
+  background-color: #e0e0e0;
+  color: #222;
+  border-bottom-right-radius: 18px;
+  border-bottom-left-radius: 0;
+}
+
+/* Área do input */
+#message-input {
+  display: flex;
+  padding: 18px 20px;
+  border-top: 1px solid #ccc;
+  background: linear-gradient(to right, #f0f0f0, #ffffff);
+}
+
+/* Input de mensagem */
+#message-input input {
+  flex: 1;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 17px;
+  outline: none;
+}
+
+/* Botão enviar */
+#message-input button {
+  margin-left: 12px;
+  padding: 16px 26px;
+  background-color: #0a0a0a;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+#message-input button:hover {
+  background-color: #222;
+}

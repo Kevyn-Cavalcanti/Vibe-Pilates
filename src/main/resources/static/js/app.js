@@ -11,7 +11,7 @@ const routes = [
     { path: '/agendar', component: Agendar },
     { path: '/conta', component: Conta },
     { path: '/matricula/:id', component: Matricula, props: true},
-	{ path: '/chat/:username', component: Chat}
+    { path: '/chat/:username', component: Chat, name: 'chat' }
 ];
 
 const router = VueRouter.createRouter({
@@ -44,7 +44,7 @@ router.afterEach((to) => {
     const mainElement = document.querySelector('body');
 
     if (mainElement) {
-        if (to.path === '/' || to.path === '/home') {
+        if (to.path === '/' || to.path === '/home' || to.name === 'chat') {
             mainElement.classList.add('image-background');
         } else {
             mainElement.classList.remove('image-background');

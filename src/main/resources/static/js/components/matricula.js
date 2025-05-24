@@ -2,6 +2,7 @@ export const Matricula = {
   data() {
     return {
       polo: null,
+      responsavel: null,
       carregando: true,
       erro: null,
       frequenciaSelecionada: "",
@@ -17,7 +18,6 @@ export const Matricula = {
     };
   },
   mounted() {
-    const url = new URL(window.location.href);
     const id = this.$route.params.id;
 
     if (!id) {
@@ -33,6 +33,14 @@ export const Matricula = {
       })
       .then((dados) => {
         this.polo = dados;
+        return fetch(`http://localhost:8080/usuario/${dados.idUsuario}`);
+      })
+      .then((res) => {
+        if (!res.ok) throw new Error("Erro ao carregar dados do responsável.");
+        return res.json();
+      })
+      .then((usuario) => {
+        this.responsavel = usuario.nome;
         this.carregando = false;
       })
       .catch((err) => {
@@ -47,6 +55,11 @@ export const Matricula = {
         case "2x por semana": return 2;
         case "3x por semana": return 3;
         default: return 0;
+      }
+    },
+    abrirChat() {
+      if (this.polo && this.polo.professor) {
+        this.$router.push(`/chat/${this.polo.professor}`);
       }
     },
     toggleAula(aula) {
@@ -64,10 +77,20 @@ export const Matricula = {
         alert(`Você só pode selecionar até ${this.maximoPermitido()} aula(s).`);
       }
     },
+    enviarMatricula() {
+      alert("Matrícula finalizada com sucesso!");
+      this.$router.push("/home");
+      // Aqui você poderia adicionar um fetch futuramente para enviar os dados ao backend
+    }
   },
   watch: {
-    frequenciaSelecionada() {
-      this.aulasSelecionadas = [];
+    frequenciaSelecionada(novoValor) {
+      if (novoValor === "Outro (Converse com o Diretor do Polo)") {
+        this.abrirChat();
+        this.frequenciaSelecionada = ""; // limpa a seleção após redirecionar
+      } else {
+        this.aulasSelecionadas = [];
+      }
     },
   },
   template: `
@@ -77,10 +100,10 @@ export const Matricula = {
 
         <div v-if="carregando">Carregando informações do polo...</div>
         <div v-else-if="erro">Erro: {{ erro }}</div>
-        <div v-else>
-          <h3>{{ polo.nome }} - {{ polo.responsavel }}</h3>
+        <div class="polo-info" v-else>
+          <h3>{{ polo.nome }} - Prof. {{ responsavel }}</h3>
 
-          <form action="/matriculas" method="POST" class="form-matricula">
+          <form @submit.prevent="enviarMatricula" class="form-matricula">
             <input type="hidden" name="idPolo" :value="polo.idPolo">
 
             <label for="frequencia">Frequência semanal:</label>
@@ -89,7 +112,7 @@ export const Matricula = {
               <option>1x por semana</option>
               <option>2x por semana</option>
               <option>3x por semana</option>
-              <option>Outro</option>
+              <option>Outro (Converse com o Diretor do Polo)</option>
             </select>
 
             <label>Selecione os dias e horários disponíveis:</label>

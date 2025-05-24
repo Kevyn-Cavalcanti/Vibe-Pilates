@@ -270,6 +270,7 @@
   transition: var(--transition);
 }
 
+
 .btn-submit:hover {
   gap: 15px;
 }
