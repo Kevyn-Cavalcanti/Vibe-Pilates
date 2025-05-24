@@ -81,7 +81,7 @@ export const Login = {
           setTimeout(() => {
             this.modoCadastro = false;
             this.sucessoCriacao = '';
-          }, 3000);
+          }, 2500);
         })
         .catch(error => {
           this.sucessoCriacao = '';
@@ -114,7 +114,7 @@ export const Login = {
           setTimeout(() => {
             this.modoRecuperacao = false;
             this.sucessoRecuperacao = '';
-          }, 3000);
+          }, 2500);
         })
         .catch(error => {
           this.erroRecuperacao = error.message;

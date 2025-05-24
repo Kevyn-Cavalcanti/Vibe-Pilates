@@ -9,7 +9,7 @@ const routes = [
     { path: '/home', component: Home },
     { path: '/agendar', component: Agendar },
     { path: '/conta', component: Conta },
-    { path: '/matricula', component: Matricula }
+    { path: '/matricula/:id', component: Matricula, props: true}
 ];
 
 const router = VueRouter.createRouter({
