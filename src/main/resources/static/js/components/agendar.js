@@ -40,7 +40,7 @@ export const Agendar = {
         this.etapaFormulario = 1;
       } else {
         console.log('já tem, segue com polo');
-        this.$router.push(`/agendar/${polo.idPolo}`);
+        this.$router.push(`/matricula/${polo.idPolo}`);
       }
     },
     avancarEtapa() {
@@ -167,7 +167,6 @@ export const Agendar = {
       await this.carregarPolos();
     } catch (err) {
       console.error("Erro ao carregar polos:", err);
-      alert("❌ Não foi possível carregar os polos do sistema.");
     }
   },
   template: `

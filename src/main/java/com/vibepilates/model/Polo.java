@@ -14,7 +14,7 @@ public class Polo {
     private String nome; 
     private Endereco endereco;
     private List<String> datahoradisponiveis;//["Segunda", "Terça"]
-    private String planoeprecodisponiveis;//"Mensal", "Trimestral", "Semestral", "Anual".
+    private List<String> planoeprecodisponiveis;//"Mensal", "Trimestral", "Semestral", "Anual".
 
     public Polo() {
     }
@@ -59,11 +59,11 @@ public class Polo {
         this.datahoradisponiveis = datahorapreferida;
     }
 
-    public String getPlano() {
+    public List<String> getPlano() {
         return planoeprecodisponiveis;
     }
 
-    public void setPlano(String plano) {
+    public void setPlano(List<String> plano) {
         this.planoeprecodisponiveis = plano;
     }
 }
