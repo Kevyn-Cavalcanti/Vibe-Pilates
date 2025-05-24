@@ -3,13 +3,15 @@ import { Home } from './components/home.js';
 import { Agendar } from './components/agendar.js';
 import { Conta } from './components/conta.js';
 import { Matricula } from './components/matricula.js';
+import { Chat } from './components/chat.js';
 
 const routes = [
     { path: '/', component: Login },
     { path: '/home', component: Home },
     { path: '/agendar', component: Agendar },
     { path: '/conta', component: Conta },
-    { path: '/matricula/:id', component: Matricula, props: true}
+    { path: '/matricula/:id', component: Matricula, props: true},
+	{ path: '/chat/:username', component: Chat}
 ];
 
 const router = VueRouter.createRouter({

@@ -18,7 +18,7 @@ export const Matricula = {
   },
   mounted() {
     const url = new URL(window.location.href);
-    const id = url.searchParams.get("id");
+    const id = this.$route.params.id;
 
     if (!id) {
       this.erro = "ID do polo não informado na URL.";
