@@ -30,7 +30,6 @@ body {
 	min-height: calc(100vh - 170px);
 	display: flex;
 	flex-direction: column;
-	padding: 2rem;
 }
 
 .image-background {

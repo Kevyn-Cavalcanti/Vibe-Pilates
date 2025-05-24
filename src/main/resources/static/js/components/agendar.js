@@ -101,7 +101,7 @@ export const Agendar = {
       };
     },
     abrirChat(polo) {
-      alert(`Abrindo chat com ${polo.professor}`);
+	  this.$router.push(`/chat/${polo.professor}`);
     },
     formatarTelefone() {
       let telefone = this.cadastroCompleto.telefone.replace(/\D/g, '');
