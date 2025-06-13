@@ -6,14 +6,6 @@ export const Matricula = {
       carregando: true,
       erro: null,
       frequenciaSelecionada: "",
-      opcoesDeAula: [
-        "Segunda: 08:00",
-        "Terça: 17:00",
-        "Quarta: 09:00",
-        "Quinta: 14:00",
-        "Sexta: 10:00",
-        "Sábado: 08:00",
-      ],
       aulasSelecionadas: [],
     };
   },
@@ -78,16 +70,50 @@ export const Matricula = {
       }
     },
     enviarMatricula() {
-      alert("Matrícula finalizada com sucesso!");
-      this.$router.push("/home");
-      // Aqui você poderia adicionar um fetch futuramente para enviar os dados ao backend
-    }
+      const idUsuario = localStorage.getItem("usuarioId");
+      if (!idUsuario) {
+        alert("Usuário não autenticado.");
+        return;
+      }
+
+      const planoSelecionado = document.getElementById("plano").value;
+      if (!planoSelecionado) {
+        alert("Por favor, selecione um plano.");
+        return;
+      }
+
+      const matricula = {
+        idUsuario: idUsuario,
+        idPolo: this.polo.idPolo,
+        frequencia: this.frequenciaSelecionada,
+        diasPreferidos: this.aulasSelecionadas,
+        plano: planoSelecionado,
+      };
+
+      fetch("http://localhost:8080/matricula", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(matricula),
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Erro ao enviar matrícula.");
+          return res.text();
+        })
+        .then((mensagem) => {
+          alert(mensagem);
+          this.$router.push("/home");
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("Erro ao finalizar matrícula. Tente novamente.");
+        });
+    },
   },
   watch: {
     frequenciaSelecionada(novoValor) {
       if (novoValor === "Outro (Converse com o Diretor do Polo)") {
         this.abrirChat();
-        this.frequenciaSelecionada = ""; // limpa a seleção após redirecionar
+        this.frequenciaSelecionada = "";
       } else {
         this.aulasSelecionadas = [];
       }
@@ -118,7 +144,7 @@ export const Matricula = {
             <label>Selecione os dias e horários disponíveis:</label>
             <div class="dias-botoes">
               <button
-                v-for="aula in opcoesDeAula"
+                v-for="aula in polo.diasDisponiveis"
                 :key="aula"
                 type="button"
                 :disabled="!frequenciaSelecionada"
@@ -130,12 +156,11 @@ export const Matricula = {
             </div>
 
             <label for="plano">Plano desejado:</label>
-            <select name="planoepreco" id="plano" required>
+            <select name="plano" id="plano" required>
               <option disabled selected value="">Selecione</option>
-              <option value="Mensal - R$120">Mensal - R$120</option>
-              <option value="Trimestral - R$330">Trimestral - R$330</option>
-              <option value="Semestral - R$600">Semestral - R$600</option>
-              <option value="Anual - R$1000">Anual - R$1000</option>
+              <option v-for="plano in polo.plano" :key="plano" :value="plano">
+                {{ plano }}
+              </option>
             </select>
 
             <button type="submit" class="btn-form">Finalizar Matrícula</button>

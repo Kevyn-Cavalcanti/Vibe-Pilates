@@ -283,7 +283,7 @@ export const Agendar = {
               <i class="fi fi-rr-globe" id="icon-login"></i>
             </div>
 
-            <button class="btn-form" type="submit">Finalizar Matrícula</button>
+            <button class="btn-form" type="submit">Finalizar Cadastro</button>
           </div>
         </form>
       </div>
