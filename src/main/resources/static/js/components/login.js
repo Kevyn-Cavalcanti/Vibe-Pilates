@@ -12,7 +12,7 @@ export const Login = {
         email: '',
         senha: '',
         confirmarSenha: '',
-        permissao: 2
+        permissao: 'Aluno'
       },
       mostrarSenhaLogin: false,
       mostrarSenhaCadastro: false,
@@ -40,6 +40,7 @@ export const Login = {
 	      localStorage.setItem("usuarioId", data.usuario.idUsuario);
 	      localStorage.setItem("usuarioNome", data.usuario.nome);
 	      localStorage.setItem("usuarioEmail", data.usuario.email);
+		  localStorage.setItem("usuarioPermissao", data.usuario.permissao);
 	      this.$router.push('/home');
 		  this.$router.replace('/home');
 		  
@@ -141,7 +142,7 @@ export const Login = {
         email: '',
         senha: '',
         confirmarSenha: '',
-        permissao: 2
+        permissao: 'Aluno'
       };
     },
     resetRecuperacao() {

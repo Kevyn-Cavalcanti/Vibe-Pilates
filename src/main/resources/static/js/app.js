@@ -4,6 +4,7 @@ import { Agendar } from './components/agendar.js';
 import { Conta } from './components/conta.js';
 import { Matricula } from './components/matricula.js';
 import { Chat } from './components/chat.js';
+import { Calendario } from './components/calendario.js';
 
 const routes = [
     { path: '/', component: Login },
@@ -11,7 +12,8 @@ const routes = [
     { path: '/agendar', component: Agendar },
     { path: '/conta', component: Conta },
     { path: '/matricula/:id', component: Matricula, props: true},
-    { path: '/chat/:username', component: Chat, name: 'chat' }
+    { path: '/chat/:username', component: Chat, name: 'chat' },
+	{ path: '/calendario/:usuarioNome', name: 'Calendario', component: Calendario, props: true}
 ];
 
 const router = VueRouter.createRouter({

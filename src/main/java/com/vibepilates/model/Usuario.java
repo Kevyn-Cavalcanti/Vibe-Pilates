@@ -18,6 +18,7 @@ public class Usuario {
     private Endereco endereco;
     private String cpf;
     private boolean estado;
+    private String permissao;
     private Date dataCad;
     
 
@@ -103,4 +104,13 @@ public class Usuario {
     public void setDataCad(Date dataCad) {
         this.dataCad = dataCad;
     }
+    
+    public String getPermissao() {
+        return permissao;
+    }
+
+    public void setPermissao(String permissao) {
+        this.permissao = permissao;
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.vibepilates.controller;
 
 import com.vibepilates.model.Matrícula;
+import com.vibepilates.model.Usuario;
 import com.vibepilates.repository.MatriculaRepository;
+import com.vibepilates.repository.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +19,10 @@ public class MatriculaController {
 
     @Autowired
     private MatriculaRepository repository;
-
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<Matrícula> matriculas = repository.findAll();
@@ -36,6 +42,23 @@ public class MatriculaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("❌ Matrícula com ID " + id + " não encontrada.");
         }
+    }
+    
+    @GetMapping("/usuario/{nome}")
+    public ResponseEntity<?> getMatriculasPorNome(@PathVariable String nome) {
+        Optional<Usuario> usuario = usuarioRepository.findByNome(nome);
+        if (usuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("❌ Usuário com nome " + nome + " não encontrado.");
+        }
+
+        List<Matrícula> matriculas = repository.findByIdUsuario(usuario.get().getIdUsuario());
+        if (matriculas.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("❌ Nenhuma matrícula encontrada para o usuário " + nome + ".");
+        }
+
+        return ResponseEntity.ok(matriculas);
     }
 
     @PostMapping
