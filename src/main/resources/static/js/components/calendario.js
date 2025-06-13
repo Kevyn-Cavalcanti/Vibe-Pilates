@@ -91,7 +91,10 @@ export const Calendario = {
   },
 
   template: `
-    <div>
+    <div id="container-calendario">
+
+      <h2 class="title-calendario">Aulas Agendadas para o usuário: {{ usuarioNome }}</h2>
+      <!--
       <select v-model="filtroNome" @change="buscarReservas">
         <option value="">Todos Usuários</option>
         <option v-for="usuario in usuarios" :key="usuario" :value="usuario">{{ usuario }}</option>
@@ -100,6 +103,7 @@ export const Calendario = {
       <button @click="$router.push({ name: 'Criar Reserva' })" class="criar-reserva-btn">
         Criar Reserva
       </button>
+      -->
 
       <div id="calendar"></div>
 

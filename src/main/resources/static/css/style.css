@@ -15,6 +15,8 @@ html {
 	--complementary-color: #303030;
 	--bg-color: #D9D9D9;
 	--destaque-color: #15dc5b;
+	--destaque-color-hover: #0a8025;
+	--destaque-color-transparent: rgba(21, 220, 91, 0.285);
 	--erro-color: #df0e0e;
 	--erro-color-hover: #b21212;
 	--transition: 0.3s;
