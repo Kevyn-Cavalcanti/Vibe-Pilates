@@ -13,8 +13,8 @@ public class Polo {
     private String idUsuario;
     private String nome; 
     private Endereco endereco;
-    private List<String> datahoradisponiveis;//["Segunda", "Terça"]
-    private List<String> planoeprecodisponiveis;//"Mensal", "Trimestral", "Semestral", "Anual".
+    private List<AulaDisponivel> aulasDisponiveis;
+    private List<PlanoPreco> planosDisponiveis;
 
     public Polo() {
     }
@@ -51,19 +51,19 @@ public class Polo {
         this.endereco = endereco;
     }
     
-    public List<String> getDiasDisponiveis() {
-        return datahoradisponiveis;
+    public List<AulaDisponivel> getAulasDisponiveis() {
+        return aulasDisponiveis;
     }
 
-    public void setDiasDisponiveis(List<String> datahorapreferida) {
-        this.datahoradisponiveis = datahorapreferida;
+    public void setAulasDisponiveis(List<AulaDisponivel> aulasDisponiveis) {
+        this.aulasDisponiveis = aulasDisponiveis;
     }
 
-    public List<String> getPlano() {
-        return planoeprecodisponiveis;
+    public List<PlanoPreco> getPlanosDisponiveis() {
+        return planosDisponiveis;
     }
 
-    public void setPlano(List<String> plano) {
-        this.planoeprecodisponiveis = plano;
+    public void setPlanosDisponiveis(List<PlanoPreco> planosDisponiveis) {
+        this.planosDisponiveis = planosDisponiveis;
     }
 }

@@ -1,35 +1,13 @@
 package com.vibepilates.model;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.vibepilates.model.MatriculaDTO.AulaSelecionadaDTO;
-
 import java.util.List;
 
-@Document(collection = "matricula")
-public class Matrícula {
-
-    @Id
-    private String idMatricula;
+public class MatriculaDTO {
 
     private String idUsuario;
     private String idPolo;
     private String frequencia;
-    private PlanoPreco planoepreco;
-
-    private List<AulaSelecionada> aulasSelecionadas;
-
-    public Matrícula() {}
-
-    public String getIdMatricula() {
-        return idMatricula;
-    }
-
-    public void setIdMatricula(String idMatricula) {
-        this.idMatricula = idMatricula;
-    }
-
+    private PlanoPreco plano;
+    private List<AulaSelecionadaDTO> aulasSelecionadas;
     public String getIdUsuario() {
         return idUsuario;
     }
@@ -55,27 +33,25 @@ public class Matrícula {
     }
 
     public PlanoPreco getPlano() {
-        return planoepreco;
+        return plano;
     }
 
-    public void setPlano(PlanoPreco planoepreco) {
-        this.planoepreco = planoepreco;
-    }
-    
-    public List<AulaSelecionada> getAulasSelecionadas() {
-    	return aulasSelecionadas;
+    public void setPlano(PlanoPreco plano) {
+        this.plano = plano;
     }
 
-    public void setAulasSelecionadas(List<AulaSelecionada> aulasSelecionadas) {
+    public List<AulaSelecionadaDTO> getAulasSelecionadas() {
+        return aulasSelecionadas;
+    }
+
+    public void setAulasSelecionadas(List<AulaSelecionadaDTO> aulasSelecionadas) {
         this.aulasSelecionadas = aulasSelecionadas;
     }
 
-    
-    
-    public static class AulaSelecionada {
+    public static class AulaSelecionadaDTO {
         private String modalidade;
         private String diaSemana;
-        private Horario horario;
+        private HorarioDTO horario;
 
         public String getModalidade() {
             return modalidade;
@@ -93,18 +69,16 @@ public class Matrícula {
             this.diaSemana = diaSemana;
         }
 
-        public Horario getHorario() {
+        public HorarioDTO getHorario() {
             return horario;
         }
 
-        public void setHorario(Horario horario) {
+        public void setHorario(HorarioDTO horario) {
             this.horario = horario;
         }
     }
 
-    
-    
-    public static class Horario {
+    public static class HorarioDTO {
         private String periodo;
         private String horaInicio;
         private String horaFim;

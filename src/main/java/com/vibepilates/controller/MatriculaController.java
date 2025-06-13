@@ -1,9 +1,11 @@
 package com.vibepilates.controller;
 
+import com.vibepilates.model.MatriculaDTO;
 import com.vibepilates.model.Matrícula;
 import com.vibepilates.model.Usuario;
 import com.vibepilates.repository.MatriculaRepository;
 import com.vibepilates.repository.UsuarioRepository;
+import com.vibepilates.service.MatriculaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,8 @@ public class MatriculaController {
 
     @Autowired
     private MatriculaRepository repository;
-    
+    @Autowired
+    private MatriculaService service;
     @Autowired
     private UsuarioRepository usuarioRepository;
     
@@ -62,10 +65,13 @@ public class MatriculaController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody Matrícula matricula) {
-        repository.save(matricula);
-        return ResponseEntity.status(HttpStatus.CREATED).body("✅ Matrícula criada com sucesso!");
+    public ResponseEntity<String> criarMatricula(@RequestBody MatriculaDTO matriculaDTO) {
+    	System.out.println(matriculaDTO.getAulasSelecionadas());
+        Matrícula matricula = service.converterDtoParaEntidade(matriculaDTO);
+        service.salvar(matricula);
+        return ResponseEntity.ok("Matrícula criada com sucesso!");
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable String id, @RequestBody Matrícula matricula) {
@@ -86,5 +92,11 @@ public class MatriculaController {
         }
         repository.deleteById(id);
         return ResponseEntity.ok("✅ Matrícula deletada com sucesso!");
+    }
+    
+    @DeleteMapping("/limparTodos")
+    public ResponseEntity<String> apagarTodasMatriculas() {
+    	repository.deleteAll();
+        return ResponseEntity.ok("Todas as matrículas foram apagadas.");
     }
 }
