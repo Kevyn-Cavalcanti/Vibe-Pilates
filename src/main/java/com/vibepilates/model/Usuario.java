@@ -1,9 +1,9 @@
 package com.vibepilates.model;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 
 @Document(collection = "usuarios")
 public class Usuario {
@@ -19,6 +19,7 @@ public class Usuario {
     private String cpf;
     private boolean estado;
     private String permissao;
+    private Date dataNasc;
     private Date dataCad;
     
 
@@ -103,6 +104,14 @@ public class Usuario {
 
     public void setDataCad(Date dataCad) {
         this.dataCad = dataCad;
+    }
+    
+    public Date getDataNasc() {
+        return dataNasc;
+    }
+
+    public void setDataNasc(Date dataNasc) {
+        this.dataNasc = dataNasc;
     }
     
     public String getPermissao() {

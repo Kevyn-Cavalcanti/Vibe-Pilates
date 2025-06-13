@@ -217,6 +217,44 @@
   margin: 35px 0;
 }
 
+.input-field-nasc {
+  width: 100%;
+  height: 55px;
+  font-size: 18px;
+  background-color: var(--white-color);
+  color: var(--black-color);
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid var(--black-color);
+  outline: none;
+  border-radius: 10px;
+  transition: var(--transition);
+}
+
+.label-nasc {
+  position: absolute;
+  top: 35%;
+  left: 100px;
+  transform: translateX(-50%);
+  color: var(--black-color);
+  font-weight: 600;
+  transition: var(--transition);
+  background-color: var(--white-color);
+  width: 10rem;
+  pointer-events: none;
+  cursor: text;
+}
+
+.input-box.filled .label-nasc,
+.input-field-nasc:focus ~ .label-nasc {
+  top: -7px;
+  font-size: 14px;
+  color: var(--white-color);
+  border-radius: 0 0 6px 6px;
+  background-color: var(--secondary-color);
+  padding: 0 10px;
+}
+
 .tel {
     left: 55px;
 }

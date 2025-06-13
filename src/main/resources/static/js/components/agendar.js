@@ -8,6 +8,7 @@ export const Agendar = {
       cadastroCompleto: {
         telefone: '',
         cpf: '',
+        dataNascimento: '',
         cep: '',
         rua: '',
         numero: '',
@@ -53,6 +54,7 @@ export const Agendar = {
       const payload = {
         telefone: this.cadastroCompleto.telefone,
         cpf: this.cadastroCompleto.cpf,
+        dataNasc: this.cadastroCompleto.dataNascimento,
         endereco: {
           cep: this.cadastroCompleto.cep,
           rua: this.cadastroCompleto.rua,
@@ -91,6 +93,7 @@ export const Agendar = {
       this.cadastroCompleto = {
         telefone: '',
         cpf: '',
+        dataNascimento: '',
         cep: '',
         rua: '',
         numero: '',
@@ -160,7 +163,21 @@ export const Agendar = {
       } else {
         this.cadastroCompleto.cep = cep;
       }
-    }
+    }, 
+    corrigirData() {
+  const data = this.cadastroCompleto.dataNascimento;
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+  if (!regex.test(data)) {
+    this.cadastroCompleto.dataNascimento = "";
+    return;
+  }
+
+  const ano = parseInt(data.split('-')[0]);
+  if (ano > 9999) {
+    this.cadastroCompleto.dataNascimento = "";
+  }
+  }
   },
   async mounted() {
     try {
@@ -222,6 +239,12 @@ export const Agendar = {
               <input type="text" class="input-field" v-model="cadastroCompleto.cpf" @input="formatarCPF" maxlength="14" required pattern="\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}" title="CPF no formato 123.456.789-00"/>
               <label class="label">CPF</label>
               <i class="fi fi-rr-id-card-clip-alt" id="icon-login"></i>
+            </div>
+
+            <!-- Data de Nascimento -->
+            <div class="input-box" :class="{ filled: cadastroCompleto.dataNascimento }">
+              <input type="date" class="input-field-nasc" v-model="cadastroCompleto.dataNascimento" @change="corrigirData" required>
+              <label class="label-nasc">Data de Nascimento</label>
             </div>
 
             <button class="btn-form" type="submit">Avançar</button>

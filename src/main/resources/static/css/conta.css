@@ -1,3 +1,16 @@
+.conta {
+	min-height: calc(100vh - 230px);
+}
+
+.container-conta {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: calc(100vh - 330px);
+	justify-content: center;
+	align-items: center;
+}
+
 .title-conta {
     font-size: 2rem;
     font-weight: bold;
@@ -7,36 +20,114 @@
     margin-bottom: 2rem;
 }
 
+.card-conta {
+  background-color: var(--secondary-color); /* Cor de fundo para o card */
+  border: 1px solid var(--complementary-color); /* Borda do card */
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra mais escura para um tema escuro */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
+  color: var(--white-color); /* Cor do texto dentro do card para contraste */
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--complementary-color); /* Linha divisória */
+  padding-bottom: 1.5rem;
+}
+
+.user-profile .icon {
+  font-size: 4rem;
+  color: var(--destaque-color); /* Cor do ícone */
+}
+
+.user-details-header {
+  text-align: left;
+}
+
+.user-details-header h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  color: var(--white-color); /* Cor do nome do usuário */
+}
+
+.user-email {
+  font-size: 1.1rem;
+  color: var(--hover-color); /* Cor do email, um tom mais suave */
+  margin-top: 0.3rem;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.info-grupo {
+  flex: 1;
+  min-width: 300px;
+  background-color: var(--complementary-color); /* Cor de fundo para os blocos de informação */
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  border: 1px solid var(--complementary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-grupo h3 {
+  font-size: 1.4rem;
+  color: var(--destaque-color); /* Cor dos títulos dos grupos de informação */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed var(--hover-color); /* Linha pontilhada */
+  padding-bottom: 0.5rem;
+}
+
+.info-grupo p {
+  margin: 0.6rem 0;
+  color: var(--white-color); /* Cor do texto dos parágrafos */
+  line-height: 1.6;
+}
+
 #sair {
-    cursor: pointer;
-    color: var(--erro-color);
-    font-weight: bold;
-    font-size: 1.5rem;
+  align-self: flex-end;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background-color: transparent;
+  border: 2px solid var(--erro-color);
+  color: var(--erro-color);
+  padding: 0.8rem 1.8rem;
+  border-radius: 0.8rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition) ease;
 }
 
 #sair:hover {
-    text-decoration: underline;
-    color: var(--erro-color-hover);
+  background-color: var(--erro-color);
+  color: var(--white-color);
 }
 
-/* ------------------------------------- */
-
-#logout:hover {
-	color: var(--comfirm-color);
+#sair i {
+  font-size: 1.3rem;
 }
 
-#logout i {
-	font-size: 1.5rem;
-	padding-right: 0.4rem;
-}
-
+/* Logout Popup */
 .logout-popup {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro e opaco */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -44,37 +135,153 @@
 }
 
 .popup-content {
-	width: 26rem;
-	background-color: var(--secondary-color);
-	border-radius: 0.8rem;
+	width: 30rem;
+	background-color: var(--secondary-color); /* Fundo do popup */
+	border-radius: 1rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	gap: 2rem;
-	padding: 2rem;
+	gap: 2.5rem;
+	padding: 3rem;
 	border: solid 1px var(--complementary-color);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Sombra mais escura */
+  color: var(--white-color); /* Cor do texto no popup */
 }
 
 #interrogacao {
-	font-size: 3rem;
-	color: var(--white-color);
-	height: 5rem;
-	width: 5rem;
+	font-size: 3.5rem;
+	color: var(--destaque-color); 
+	height: 6rem;
+	width: 6rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
-	border: solid 2px var(--white-color);
+	border: solid 3px var(--destaque-color);
 	text-align: center;
-	font-weight: 600;
+	font-weight: 700;
 }
 
 .popup-content p {
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	font-weight: 500;
 	text-align: center;
+	color: var(--white-color);
 }
+
+.btns-logout {
+	display: flex;
+	gap: 1.5rem;
+}
+
+.btns-logout button {
+	width: 12rem;
+	height: 3.5rem;
+	background-color: var(--black-color); /* Cor de fundo dos botões */
+	color: var(--white-color);
+	border: none;
+	padding-top: 2px;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 1.1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.btns-logout button:hover {
+	background-color: var(--black-color-hover);
+}
+
+#btn-sim {
+	background-color: var(--erro-color);
+}
+
+#btn-sim:hover {
+	background-color: var(--erro-color-hover);
+}
+
+/* Media Query para telas menores (mobile) */
+@media (max-width: 768px) {
+  .conta {
+    padding: 1rem;
+  }
+
+  .title-conta {
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: solid 1px var(--black-color); /* Mantém black-color para a borda do título em mobile */
+    padding-bottom: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .container-conta {
+    min-height: calc(100vh - 330px);
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+
+  .card-conta {
+    padding: 1.5rem;
+    gap: 1.5rem;
+    max-width: 100%;
+    background-color: var(--secondary-color); /* Mantém secondary-color para o card em mobile */
+  }
+
+  .user-profile {
+    flex-direction: column;
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .user-profile .icon {
+    font-size: 3rem;
+    color: var(--destaque-color); /* Cor do ícone em mobile */
+  }
+
+  .user-details-header {
+    text-align: center;
+  }
+
+  .user-details-header h2 {
+    font-size: 1.8rem;
+    color: var(--white-color); /* Cor do nome em mobile */
+  }
+
+  .user-email {
+    font-size: 1rem;
+    color: var(--hover-color); /* Cor do email em mobile */
+  }
+
+  .content-wrapper {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .info-grupo {
+    min-width: unset;
+    padding: 1rem;
+    background-color: var(--complementary-color); /* Mantém complementary-color para os blocos em mobile */
+  }
+
+  .info-grupo h3 {
+    font-size: 1.2rem;
+    text-align: center;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.5rem;
+    color: var(--destaque-color); /* Cor dos títulos dos grupos em mobile */
+  }
+
+  .info-grupo p {
+    font-size: 0.95rem;
+    margin: 0.2rem 0;
+    line-height: 1.5;
+    color: var(--white-color); /* Cor do texto dos parágrafos em mobile */
+  }
 
 .btns-logout {
 	display: flex;
@@ -107,4 +314,5 @@
 
 #btn-sim:hover {
 	background-color: var(--erro-color-hover);
+}
 }

@@ -1,12 +1,13 @@
 package com.vibepilates.controller;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Arrays;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,7 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<Map<String, String>> create(@RequestBody Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setDataCad(new Date());
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("mensagem", "✅ Usuário criado com sucesso!"));
