@@ -57,7 +57,7 @@
 .marcar-btn {
     border-radius: 10px;
     background-color: var(--white-color);
-    border: none;
+    border: 1px solid var(--white-color);
     font-size: 1.2rem;
     width: 16rem;
     height: 2.5rem;
@@ -185,36 +185,43 @@
 }
 
 .title-cadastro-modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 22px;
-  font-weight: bold;
-  white-space: nowrap;
-  color: var(--white-color);
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  font-size: 22px !important;
+  font-weight: bold !important;
+  white-space: nowrap !important;
+  color: var(--white-color) !important; 
 }
 
 .fechar-modal {
   position: absolute;
-  top: 25px;
+  top: 28px;
   right: 40px;
   background: none;
   border: none;
   font-size: 0.8rem;
   color: var(--white-color);
   cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  z-index: 999;
 }
 
 .voltar-modal {
   position: absolute;
-  top: -18px;
+  top: -10px;
   left: 10px;
   background: none;
   border: none;
   font-size: 1.3rem;
   color: var(--white-color);
   cursor: pointer;
+  margin: 0.5rem;
+  z-index: 999;
+  width: 1.5rem;
+  height: 1.5rem
 }
 
 .input-box {

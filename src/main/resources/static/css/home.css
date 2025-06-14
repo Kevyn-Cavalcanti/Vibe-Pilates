@@ -36,10 +36,6 @@
     align-content: center;
     width: 100%;
     padding: 270px 0px;
-    /* background-image: url(../images/fundo.png); */
-    /* background-size: cover 150%;
-    background-position: 50% 20%; */
-
 }
 
 .title-home {
@@ -48,4 +44,43 @@
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     color: var(--black-color);
+}
+
+@media (max-width: 1810px) {
+  .btn {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1540px) {
+  .btn {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 1390px) {
+  .btn {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1160px) {
+  .btn {
+    width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn {
+    width: 100%; /* Largura total em telas menores */
+    font-size: 1.2rem; /* Fonte menor */
+    padding: 15px; /* Padding reduzido */
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    font-size: 1rem; /* Fonte ainda menor para telas muito pequenas */
+    padding: 12px; /* Padding ainda mais reduzido */
+  }
 }

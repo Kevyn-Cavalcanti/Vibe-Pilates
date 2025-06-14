@@ -1,42 +1,52 @@
 .matricula {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row; /* Mantido conforme sua preferência, mas o botão será absoluto */
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  align-items: flex-start; /* Alinha o conteúdo ao topo */
+  min-height: 100vh; /* Garante que o container ocupe a altura total da viewport */
+  width: 100%; /* Ocupa a largura total para o flexbox */
+  padding: 2rem; /* Adicionado padding para dar espaço ao botão */
+  position: relative; /* Essencial para o posicionamento absoluto do #btn-voltar */
 }
 
 .container-matricula {
-  width: 60rem;
+  width: 90%; /* Ajustado para ser responsivo */
+  max-width: 60rem; /* Limita a largura máxima, mas permite encolher */
   padding: 2rem;
   background: var(--secondary-color);
   color: var(--white-color);
   border-radius: 1rem;
+  /* Removido: margin-left: 3rem; - Esta era a causa do problema de centralização */
 }
 
 #btn-voltar {
-  position: absolute;
-  top: 15rem;
-  left: 25rem;
-  background-color: var(--destaque-color);
-  color: var(--black-color);
+  position: absolute; /* Agora posicionado absolutamente */
+  left: 2rem; /* Distância da borda esquerda de .matricula */
+  top: 2rem; /* Distância da borda superior de .matricula */
+  height: 2.5rem;
+  width: 6rem;
+  text-align: center;
+  background-color: var(--black-color);
+  color: var(--white-color);
   border: none;
-  padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: bold;
   border-radius: 0.5rem;
   cursor: pointer;
-  border: 1px solid var(--destaque-color);
-}
-
-#btn-voltar:hover {
-  border: 1px solid var(--destaque-color-hover);
+  border: 1px solid var(--black-color);
+  display: flex; /* Para alinhar o ícone e o texto */
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Espaçamento entre o ícone e o texto */
+  /* Removido: margin-top: 1rem; pois 'top' já controla a posição vertical */
 }
 
 .titulo {
   font-size: 2.5rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid var(--destaque-color);
+  border-bottom: 2px solid var(--white-color);
   padding-bottom: 0.5rem;
+  color: var(--white-color); /* Garante visibilidade */
 }
 
 /* Contêiner para agrupamento de campos */
@@ -52,7 +62,7 @@
 .grupo h2 {
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  color: var(--destaque-color);
+  color: var(--white-color);
 }
 
 /* Estilo para o formulário principal da matrícula */
@@ -77,9 +87,9 @@
 
 /* Estilo base para todos os botões no formulário */
 .form-matricula-new button {
-  background-color: var(--destaque-color);
+  background-color: var(--white-color);
   color: var(--black-color);
-  border: none;
+  border: 1px solid var(--white-color);
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
@@ -90,7 +100,7 @@
 
 /* Efeito hover para os botões do formulário */
 .form-matricula-new button:hover {
-  background-color: var(--destaque-color-hover);
+  background-color: var(--black-color);
   color: var(--white-color);
 }
 
@@ -103,7 +113,7 @@
 /* Estilo para os subtítulos de itens (Aula 1, Plano 1) */
 .subtitulo-item {
   font-size: 1.3rem;
-  color: var(--destaque-color);
+  color: var(--white-color);
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   margin-top: 0;
@@ -150,7 +160,7 @@
 }
 
 /* Estilos para o Modal de Confirmação */
-.modal-overlay {
+.modal-overlay-confirm {
   position: fixed;
   top: 0;
   left: 0;
@@ -163,7 +173,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modal-content-confirm {
   background-color: var(--secondary-color);
   padding: 2rem;
   border-radius: 1rem;
@@ -174,19 +184,19 @@
   color: var(--white-color);
 }
 
-.modal-content h2 {
+.modal-content-confirm h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: var(--destaque-color);
+  color: var(--white-color);
 }
 
-.modal-content p {
+.modal-content-confirm p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
 }
 
-.modal-content button {
-  background-color: var(--destaque-color);
+#btn-confirmar-matricula {
+  background-color: var(--white-color);
   color: var(--black-color);
   border: none;
   padding: 0.8rem 1.5rem;
@@ -197,8 +207,8 @@
   transition: background-color var(--transition);
 }
 
-.modal-content button:hover {
-  background-color: var(--destaque-color-hover);
+#btn-confirmar-matricula:hover {
+  background-color: var(--black-color);
   color: var(--white-color);
 }
 

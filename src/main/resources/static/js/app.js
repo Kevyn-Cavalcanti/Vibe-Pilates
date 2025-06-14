@@ -90,7 +90,7 @@ const app = {
                 <ul class="nav-list">
                     <li><router-link to="/home" class="navbtn">Home</router-link></li>
                     <li><router-link to="/agendar" class="navbtn">Agendar Aula</router-link></li>
-                    <li><router-link v-if="podeCriarPolo" to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
+                    <li v-if="podeCriarPolo"><router-link to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
                     <li><router-link to="/conta" class="navbtn">Conta</router-link></li>
                 </ul>
             </nav>

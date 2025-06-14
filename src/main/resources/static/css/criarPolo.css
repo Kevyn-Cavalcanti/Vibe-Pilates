@@ -9,7 +9,7 @@
 .titulo {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--destaque-color);
+  border-bottom: 2px solid var(--white-color);
   padding-bottom: 0.5rem;
 }
 .grupo {
@@ -22,7 +22,7 @@
 .grupo h2 {
   margin-bottom: 1rem;
   font-size: 1.5rem;
-  color: var(--destaque-color);
+  color: var(--white-color);
 }
 
 .form-polo input, select {
@@ -38,9 +38,9 @@
 }
 
 .form-polo button {
-  background-color: var(--destaque-color);
+  background-color: var(--white-color);
   color: var(--black-color);
-  border: none;
+  border: 1px solid var(--white-color);
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
   font-weight: bold;
@@ -51,7 +51,7 @@
 }
 
 .form-polo button:hover {
-  background-color: var(--destaque-color-hover);
+  background-color: var(--black-color);
   color: var(--white-color);
 }
 
@@ -70,7 +70,7 @@
 }
 
 #voltar-etapa {
-  background-color: var(--destaque-color);
+  background-color: var(--white-color);
   color: var(--black-color);
   border: none;
   padding: 0.5rem 1rem;
@@ -89,7 +89,7 @@
 }
 
 /* Modal Overlay */
-.modal-overlay {
+.modal-overlay-polo {
   position: fixed;
   top: 0;
   left: 0;
@@ -103,7 +103,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-msg-polo {
   background-color: var(--secondary-color); /* Usando uma variável existente */
   padding: 2rem;
   border-radius: 1rem;
@@ -114,20 +114,19 @@
   color: var(--white-color); /* Cor do texto */
 }
 
-.modal-content h2 {
+.modal-content-msg-polo h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
-    color: var(--destaque-color); /* Cor do título */
+    color: var(--white-color); /* Cor do título */
 }
 
-.modal-content p {
+.modal-content-msg-polo p {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
 }
 
-.modal-content button {
-    /* Reutiliza o estilo dos botões de ação ou btn-enviar */
-    background-color: var(--destaque-color);
+.modal-content-msg-polo button {
+    background-color: var(--white-color);
     color: var(--black-color);
     border: none;
     padding: 0.8rem 1.5rem;
@@ -137,7 +136,7 @@
     cursor: pointer;
 }
 
-.modal-content button:hover {
-    background-color: var(--destaque-color-hover);
+.modal-content-msg-polo button:hover {
+    background-color: var(--black-color);
     color: var(--white-color);
 }

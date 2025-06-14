@@ -286,8 +286,8 @@ export const CriarPolo = {
     </form>
 
     <!-- Modal de Confirmação -->
-<div class="modal-overlay" v-if="mostrarConfirmacaoModal">
-  <div class="modal-content">
+<div class="modal-overlay-polo" v-if="mostrarConfirmacaoModal">
+  <div class="modal-content-msg-polo">
     <h2>Operação Concluída</h2>
     <p>{{ mensagemFeedback }}</p>
     <button @click="fecharConfirmacaoModal">Fechar</button>

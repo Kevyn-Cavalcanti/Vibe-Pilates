@@ -44,7 +44,7 @@
 
 .user-profile .icon {
   font-size: 4rem;
-  color: var(--destaque-color); /* Cor do ícone */
+  color: var(--white-color); /* Cor do ícone */
 }
 
 .user-details-header {
@@ -81,7 +81,7 @@
 
 .info-grupo h3 {
   font-size: 1.4rem;
-  color: var(--destaque-color); /* Cor dos títulos dos grupos de informação */
+  color: var(--white-color); /* Cor dos títulos dos grupos de informação */
   margin-top: 0;
   margin-bottom: 1rem;
   border-bottom: 1px dashed var(--hover-color); /* Linha pontilhada */
@@ -151,14 +151,14 @@
 
 #interrogacao {
 	font-size: 3.5rem;
-	color: var(--destaque-color); 
+	color: var(--white-color); 
 	height: 6rem;
 	width: 6rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
-	border: solid 3px var(--destaque-color);
+	border: solid 3px var(--white-color);
 	text-align: center;
 	font-weight: 700;
 }
@@ -239,7 +239,7 @@
 
   .user-profile .icon {
     font-size: 3rem;
-    color: var(--destaque-color); /* Cor do ícone em mobile */
+    color: var(--white-color); /* Cor do ícone em mobile */
   }
 
   .user-details-header {
@@ -273,7 +273,7 @@
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 0.5rem;
-    color: var(--destaque-color); /* Cor dos títulos dos grupos em mobile */
+    color: var(--white-color); /* Cor dos títulos dos grupos em mobile */
   }
 
   .info-grupo p {
