@@ -27,6 +27,7 @@ function sair() {
   localStorage.removeItem("usuarioId");
   localStorage.removeItem("usuarioNome");
   localStorage.removeItem("usuarioEmail");
+  localStorage.removeItem("usuarioPermissao");
 }
 
 router.beforeEach((to, from, next) => {
@@ -61,6 +62,20 @@ const app = {
         return {
         };
     },
+	computed: {
+	ehAluno() {
+	    return localStorage.getItem("usuarioPermissao") === "Aluno";
+	  },
+	 ehRecepcionista() {
+	  	return localStorage.getItem("usuarioPermissao") === "Recepcionista";
+	 },
+	 ehInstrutor() {
+ 	  	return localStorage.getItem("usuarioPermissao") === "Instrutor";
+ 	 },
+	 ehAdmin() {
+	    return localStorage.getItem("usuarioPermissao") === "Administrador";
+	  }
+	},
     methods: {
     },
     template: `
@@ -75,7 +90,7 @@ const app = {
                 <ul class="nav-list">
                     <li><router-link to="/home" class="navbtn">Home</router-link></li>
                     <li><router-link to="/agendar" class="navbtn">Agendar Aula</router-link></li>
-                    <li><router-link to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
+                    <li><router-link v-if="podeCriarPolo" to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
                     <li><router-link to="/conta" class="navbtn">Conta</router-link></li>
                 </ul>
             </nav>

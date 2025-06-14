@@ -30,6 +30,7 @@ export const Conta = {
         localStorage.removeItem("usuarioId");
         localStorage.removeItem("usuarioNome");
         localStorage.removeItem("usuarioEmail");
+		localStorage.removeItem("usuarioPermissao");
         this.$router.push("/");
       });
     },
@@ -56,7 +57,8 @@ export const Conta = {
       <div class="user-profile">
         <i class="fi fi-ss-user icon"></i>
         <div class="user-details-header">
-          <h2>{{ usuario.nome }}</h2>
+		<h2 style="display: inline">{{ usuario.nome }}</h2>
+		<h2 style="display: inline; margin-left: 8px">{{ "- " + usuario.permissao }}</h2>
           <p class="user-email">{{ usuario.email }}</p>
         </div>
       </div>

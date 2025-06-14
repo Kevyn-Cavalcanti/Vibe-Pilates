@@ -130,7 +130,8 @@ public class UsuarioController {
             "usuario", Map.of(
                 "idUsuario", usuario.getIdUsuario(),
                 "nome", usuario.getNome(),
-                "email", usuario.getEmail()
+                "email", usuario.getEmail(),
+                "permissao", usuario.getPermissao()
             )
         );
 
