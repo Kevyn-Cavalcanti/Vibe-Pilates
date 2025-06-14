@@ -1,0 +1,143 @@
+.criar-polo {
+  width: 60rem;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--secondary-color);
+  color: var(--white-color);
+  border-radius: 1rem;
+}
+.titulo {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--destaque-color);
+  padding-bottom: 0.5rem;
+}
+.grupo {
+  margin-bottom: 2rem;
+  border: 1px solid var(--complementary-color);
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  background: var(--black-color);
+}
+.grupo h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--destaque-color);
+}
+
+.form-polo input, select {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid var(--hover-color);
+  border-radius: 0.5rem;
+  background: var(--white-color);
+  color: var(--black-color);
+}
+
+.form-polo button {
+  background-color: var(--destaque-color);
+  color: var(--black-color);
+  border: none;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition:var(--transition);
+}
+
+.form-polo button:hover {
+  background-color: var(--destaque-color-hover);
+  color: var(--white-color);
+}
+
+.subtitulo-item {
+    margin-bottom: 0.5rem;
+    padding-top: 10px;
+    border-top: 1px solid var(--white-color);
+}
+
+.subtitulo-subitem {
+    margin-bottom: 0.5rem;
+}
+
+#adicionar-horario {
+    margin-bottom: 1rem;
+}
+
+#voltar-etapa {
+  background-color: var(--destaque-color);
+  color: var(--black-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 0;
+  margin-bottom: 1.3rem;
+  transition:var(--transition);
+}
+
+.btn-enviar {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que esteja acima de outros elementos */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: var(--secondary-color); /* Usando uma variável existente */
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  color: var(--white-color); /* Cor do texto */
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--destaque-color); /* Cor do título */
+}
+
+.modal-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.modal-content button {
+    /* Reutiliza o estilo dos botões de ação ou btn-enviar */
+    background-color: var(--destaque-color);
+    color: var(--black-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: var(--destaque-color-hover);
+    color: var(--white-color);
+}

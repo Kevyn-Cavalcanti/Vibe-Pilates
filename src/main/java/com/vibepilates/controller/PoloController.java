@@ -41,7 +41,7 @@ public class PoloController {
     @PostMapping
     public ResponseEntity<String> create(@RequestBody Polo polo) {
         repository.save(polo);
-        return ResponseEntity.status(HttpStatus.CREATED).body("✅ Polo criado com sucesso!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Polo criado com sucesso!");
     }
 
     @PutMapping("/{id}")

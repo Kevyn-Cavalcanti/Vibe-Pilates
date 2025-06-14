@@ -8,18 +8,25 @@
 
 .div-cards {
     justify-items: center;
+    min-height: calc(100vh - 230px);
 }
 
 .cards {
     margin-top: 50px;
     width: 80%;
     overflow-y: scroll;
-    height: 650px;
+    max-height: calc(100vh - 300px);
+    border-radius: 10px;
+    padding-right: 1.5rem;
+}
+
+.cards::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-color);
     border-radius: 10px;
 }
 
 .cards::-webkit-scrollbar {
-    display: none;
+    width: 10px;
 }
 
 .info {

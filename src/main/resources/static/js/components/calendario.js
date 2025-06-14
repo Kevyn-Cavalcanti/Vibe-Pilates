@@ -176,8 +176,8 @@ export const Calendario = {
 
       <div id="calendar"></div>
 
-      <div v-if="reservaselecionado" class="modal">
-        <div class="modal-content">
+      <div v-if="reservaselecionado" class="app-modal-overlay">
+        <div class="app-modal-content">
           <h3>Detalhes da reserva</h3>
           <p><strong>Modalidade:</strong> {{ reservaselecionado.descricao }}</p>
           <p><strong>Professor:</strong> {{ reservaselecionado.professor }}</p>
