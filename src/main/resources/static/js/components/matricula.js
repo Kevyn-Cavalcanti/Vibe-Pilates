@@ -225,95 +225,98 @@ export const Matricula = {
     },
   },
   template: `
-    <section class="matricula-section">
-      <h1 class="titulo">Matrícula</h1>
+    <section class="matricula">
+      <button @click="$router.push('/agendar')" id="btn-voltar"><i class="fi fi-rr-arrow-left"></i> Voltar</button>
+      <div class="container-matricula">
+        <h1 class="titulo">Matrícula</h1>
 
-      <!-- Mensagem de feedback (sucesso/erro) -->
-      <div v-if="mensagemFeedback && !mostrarConfirmacaoModal" :class="['mensagem-feedback', mensagemTipo]">
-        {{ mensagemFeedback }}
-      </div>
-
-      <div v-if="carregando">Carregando informações do polo...</div>
-      <div v-else-if="erro">Erro: {{ erro }}</div>
-
-      <form @submit.prevent="enviarMatricula" class="form-matricula-new" v-else>
-        <div class="grupo">
-          <h2>Informações do Polo</h2>
-          <h3 class="subtitulo-item">{{ polo.nome }}</h3>
-          <p class="text-info">Responsável: {{ responsavel }}</p>
-          <p class="text-info">Endereço: {{ polo.endereco.rua }}, {{ polo.endereco.numero }} - {{ polo.endereco.bairro }}, {{ polo.endereco.cidade }} - {{ polo.endereco.estado }}</p>
+        <!-- Mensagem de feedback (sucesso/erro) -->
+        <div v-if="mensagemFeedback && !mostrarConfirmacaoModal" :class="['mensagem-feedback', mensagemTipo]">
+          {{ mensagemFeedback }}
         </div>
 
-        <div class="grupo">
-          <h2>Frequência Semanal</h2>
-          <select v-model="frequenciaSelecionada" id="frequencia" required class="form-select">
-            <option disabled value="">Selecione</option>
-            <option>1x por semana</option>
-            <option>2x por semana</option>
-            <option>3x por semana</option>
-            <option>Outro (Converse com o Diretor do Polo)</option>
-          </select>
-        </div>
+        <div v-if="carregando">Carregando informações do polo...</div>
+        <div v-else-if="erro">Erro: {{ erro }}</div>
 
-        <div class="grupo">
-          <h2>Aulas Disponíveis</h2>
-          <p class="text-info">Selecione até {{ semLimite ? 'o limite acordado' : maximoPermitido() }} aula(s).</p>
-          <div
-            v-for="(aula, index) in polo.aulasDisponiveis"
-            :key="aula.modalidade + aula.diadasemana"
-            class="aula-item"
-          >
-            <h3 class="subtitulo-item">Aula {{ index + 1 }}</h3>
-            <label class="checkbox-label">
-              <input
-                type="checkbox"
-                :checked="aulasSelecionadas.some(sel => sel.id === aula.modalidade + '-' + aula.diadasemana)"
-                @change="alternarAula(aula, $event)"
-              />
-              <span>
-                {{ aula.modalidade }} - {{ aula.diadasemana }}
-              </span>
-            </label>
-
-            <div v-if="aulasSelecionadas.some(sel => sel.id === aula.modalidade + '-' + aula.diadasemana)" class="horario-select-container">
-              <select @change="onSelecionarHorario(aula, $event)" class="form-select">
-                <option value="">Escolha um horário</option>
-                <option
-                  v-for="horario in aula.horarios"
-                  :key="horario.horaInicio + horario.professor"
-                  :value="JSON.stringify(horario)"
-                >
-                  {{ formatarHora(horario.horaInicio) }} às {{ formatarHora(horario.horaFim) }} ({{ horario.professor }})
-                </option>
-              </select>
-            </div>
-            <hr class="separator-item" v-if="index < polo.aulasDisponiveis.length - 1" />
+        <form @submit.prevent="enviarMatricula" class="form-matricula-new" v-else>
+          <div class="grupo">
+            <h2>Informações do Polo</h2>
+            <h3 class="subtitulo-item">{{ polo.nome }}</h3>
+            <p class="text-info">Responsável: {{ responsavel }}</p>
+            <p class="text-info">Endereço: {{ polo.endereco.rua }}, {{ polo.endereco.numero }} - {{ polo.endereco.bairro }}, {{ polo.endereco.cidade }} - {{ polo.endereco.estado }}</p>
           </div>
-        </div>
 
-        <div class="grupo">
-          <h2>Planos Desejados</h2>
-          <select name="plano" id="plano" required class="form-select">
-            <option disabled selected value="">Selecione</option>
-            <option
-              v-for="(plano, index) in polo.planosDisponiveis"
-              :key="index"
-              :value="JSON.stringify(plano)"
+          <div class="grupo">
+            <h2>Frequência Semanal</h2>
+            <select v-model="frequenciaSelecionada" id="frequencia" required class="form-select">
+              <option disabled value="">Selecione</option>
+              <option>1x por semana</option>
+              <option>2x por semana</option>
+              <option>3x por semana</option>
+              <option>Outro (Converse com o Diretor do Polo)</option>
+            </select>
+          </div>
+
+          <div class="grupo">
+            <h2>Aulas Disponíveis</h2>
+            <p class="text-info">Selecione até {{ semLimite ? 'o limite acordado' : maximoPermitido() }} aula(s).</p>
+            <div
+              v-for="(aula, index) in polo.aulasDisponiveis"
+              :key="aula.modalidade + aula.diadasemana"
+              class="aula-item"
             >
-              {{ plano.nome }} - {{ plano.recorrencia }} - {{ formatarPrecoParaExibicao(plano.preco) }}
-            </option>
-          </select>
-        </div>
+              <h3 class="subtitulo-item">Aula {{ index + 1 }}</h3>
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  :checked="aulasSelecionadas.some(sel => sel.id === aula.modalidade + '-' + aula.diadasemana)"
+                  @change="alternarAula(aula, $event)"
+                />
+                <span>
+                  {{ aula.modalidade }} - {{ aula.diadasemana }}
+                </span>
+              </label>
 
-        <button type="submit" class="btn-enviar">Finalizar Matrícula</button>
-      </form>
+              <div v-if="aulasSelecionadas.some(sel => sel.id === aula.modalidade + '-' + aula.diadasemana)" class="horario-select-container">
+                <select @change="onSelecionarHorario(aula, $event)" class="form-select">
+                  <option value="">Escolha um horário</option>
+                  <option
+                    v-for="horario in aula.horarios"
+                    :key="horario.horaInicio + horario.professor"
+                    :value="JSON.stringify(horario)"
+                  >
+                    {{ formatarHora(horario.horaInicio) }} às {{ formatarHora(horario.horaFim) }} ({{ horario.professor }})
+                  </option>
+                </select>
+              </div>
+              <hr class="separator-item" v-if="index < polo.aulasDisponiveis.length - 1" />
+            </div>
+          </div>
 
-      <!-- Modal de Confirmação -->
-      <div class="modal-overlay" v-if="mostrarConfirmacaoModal">
-        <div class="modal-content">
-          <h2>Matrícula Realizada!</h2>
-          <p>{{ mensagemFeedback }}</p>
-          <button @click="fecharConfirmacaoModal">Fechar</button>
+          <div class="grupo">
+            <h2>Planos Desejados</h2>
+            <select name="plano" id="plano" required class="form-select">
+              <option disabled selected value="">Selecione</option>
+              <option
+                v-for="(plano, index) in polo.planosDisponiveis"
+                :key="index"
+                :value="JSON.stringify(plano)"
+              >
+                {{ plano.nome }} - {{ plano.recorrencia }} - {{ formatarPrecoParaExibicao(plano.preco) }}
+              </option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-enviar-matricula">Finalizar Matrícula</button>
+        </form>
+
+        <!-- Modal de Confirmação -->
+        <div class="modal-overlay" v-if="mostrarConfirmacaoModal">
+          <div class="modal-content">
+            <h2>Matrícula Realizada!</h2>
+            <p>{{ mensagemFeedback }}</p>
+            <button @click="fecharConfirmacaoModal">Fechar</button>
+          </div>
         </div>
       </div>
     </section>

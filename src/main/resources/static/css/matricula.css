@@ -1,14 +1,37 @@
-/* Estilos para o container principal da tela de matrícula */
-.matricula-section {
+.matricula {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-matricula {
   width: 60rem;
-  margin: 0 auto;
   padding: 2rem;
   background: var(--secondary-color);
   color: var(--white-color);
   border-radius: 1rem;
 }
 
-/* Título principal da tela */
+#btn-voltar {
+  position: absolute;
+  top: 15rem;
+  left: 25rem;
+  background-color: var(--destaque-color);
+  color: var(--black-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: 1px solid var(--destaque-color);
+}
+
+#btn-voltar:hover {
+  border: 1px solid var(--destaque-color-hover);
+}
+
 .titulo {
   font-size: 2.5rem;
   margin-bottom: 2rem;
@@ -177,6 +200,10 @@
 .modal-content button:hover {
   background-color: var(--destaque-color-hover);
   color: var(--white-color);
+}
+
+.btn-enviar-matricula {
+  margin-top: 0;
 }
 
 /* Estilos específicos para texto de informação dentro de grupos */
