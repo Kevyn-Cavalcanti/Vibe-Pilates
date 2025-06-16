@@ -63,3 +63,10 @@ Este projeto foi desenvolvido para várias disciplinas do terceiro semestre. O o
 - Abra no navegador e vá para: 'localhost:8080/#/';
 - Para acessar todas as funcionalidades do site, é necessário ter uma conta de "Administrador". Visto que um usuário padrão não pode se tornar admin sozinho,
 é necessário alterar sua própria permissão por meio de um PUT no postman.
+
+- ---
+
+## Links Importantes
+
+- Github https://github.com/Kevyn-Cavalcanti/Vibe-Pilates.git
+- Documentação de Endpoints https://documenter.getpostman.com/view/38134696/2sB2x8FXMx
