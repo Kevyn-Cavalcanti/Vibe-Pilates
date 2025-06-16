@@ -2,7 +2,7 @@ export const Agendar = {
   data() {
     return {
       polos: [],
-      carregandoPolos: true, 
+      carregandoPolos: true,
       mostrarFormulario: false,
       mostrarMensagem: false,
       etapaFormulario: 1,
@@ -17,7 +17,10 @@ export const Agendar = {
         bairro: '',
         cidade: '',
         estado: '',
-      }
+      },
+      mostrarFeedbackCadastroModal: false,
+      feedbackCadastroMessage: '',
+      feedbackCadastroType: '',
     };
   },
   methods: {
@@ -28,7 +31,7 @@ export const Agendar = {
         if (!resposta.ok) {
           throw new Error(`Erro ao buscar polos: ${resposta.statusText}`);
         }
-        
+
         const polosData = await resposta.json();
 
         if (!Array.isArray(polosData) || polosData.length === 0) {
@@ -67,6 +70,9 @@ export const Agendar = {
       const id = localStorage.getItem("usuarioId");
       if (!id) {
         console.error("ID do usuário não encontrado no localStorage.");
+        this.feedbackCadastroMessage = "❌ ID do usuário não disponível. Por favor, faça login para prosseguir com a matrícula.";
+        this.feedbackCadastroType = 'erro';
+        this.mostrarFeedbackCadastroModal = true;
         return;
       }
 
@@ -86,7 +92,9 @@ export const Agendar = {
         }
       } catch (erro) {
         console.error("Erro ao verificar dados do usuário para matrícula:", erro);
-        alert("❌ Ocorreu um erro ao verificar seus dados. Tente novamente.");
+        this.feedbackCadastroMessage = `❌ Ocorreu um erro ao verificar seus dados: ${erro.message}. Tente novamente.`;
+        this.feedbackCadastroType = 'erro';
+        this.mostrarFeedbackCadastroModal = true;
       }
     },
     avancarEtapa() {
@@ -97,7 +105,9 @@ export const Agendar = {
       const id = localStorage.getItem("usuarioId");
       if (!id) {
         console.error("ID do usuário não encontrado no localStorage ao finalizar cadastro.");
-        alert("❌ Erro: ID do usuário não disponível. Por favor, faça login novamente.");
+        this.feedbackCadastroMessage = "❌ Erro: ID do usuário não disponível. Por favor, faça login novamente.";
+        this.feedbackCadastroType = 'erro';
+        this.mostrarFeedbackCadastroModal = true;
         return;
       }
 
@@ -130,11 +140,16 @@ export const Agendar = {
           throw new Error(`Erro ao atualizar os dados do usuário: ${errorText}`);
         }
 
-        alert("Cadastro finalizado com sucesso!");
-        this.mostrarFormulario = false;
+        this.feedbackCadastroMessage = "Cadastro finalizado com sucesso!";
+        this.feedbackCadastroType = 'sucesso';
+        this.mostrarFeedbackCadastroModal = true;
+        this.mostrarFormulario = false; // Fecha o formulário de cadastro após o sucesso
+
       } catch (erro) {
         console.error(erro);
-        alert(`❌ Ocorreu um erro ao salvar os dados: ${erro.message}. Tente novamente.`);
+        this.feedbackCadastroMessage = `❌ Ocorreu um erro ao salvar os dados: ${erro.message}. Tente novamente.`;
+        this.feedbackCadastroType = 'erro';
+        this.mostrarFeedbackCadastroModal = true;
       }
     },
     fecharFormulario() {
@@ -154,11 +169,18 @@ export const Agendar = {
         estado: '',
       };
     },
+    fecharFeedbackCadastroModal() {
+      this.mostrarFeedbackCadastroModal = false;
+      this.feedbackCadastroMessage = '';
+      this.feedbackCadastroType = '';
+    },
     abrirChat(polo) {
       if (polo.professor && polo.professor !== 'N/A' && polo.professor !== 'Erro ao Carregar') {
-        this.$router.push(`/chat/${polo.professor}`); 
+        this.$router.push(`/chat/${polo.professor}`);
       } else {
-        alert("Não é possível abrir o chat para este polo no momento.");
+        this.feedbackCadastroMessage = "Não é possível abrir o chat para este polo no momento.";
+        this.feedbackCadastroType = 'erro';
+        this.mostrarFeedbackCadastroModal = true;
       }
     },
     formatarTelefone() {
@@ -218,7 +240,7 @@ export const Agendar = {
       } else {
         this.cadastroCompleto.cep = cep;
       }
-    }, 
+    },
     corrigirData() {
       const data = this.cadastroCompleto.dataNascimento;
       const regex = /^\d{4}-\d{2}-\d{2}$/;
@@ -351,6 +373,18 @@ export const Agendar = {
             <button class="btn-form" type="submit">Finalizar Cadastro</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Novo Modal de Feedback de Cadastro (Sucesso/Erro) -->
+    <div v-if="mostrarFeedbackCadastroModal" class="modal-overlay">
+      <div :class="['modal-content-msg', feedbackCadastroType === 'sucesso' ? 'modal-success' : 'modal-error']">
+        <i :class="['fi', feedbackCadastroType === 'sucesso' ? 'fi-rr-check-circle' : 'fi-rr-times-circle']" id="icon-msg"></i>
+        <p id="msg-modal">{{ feedbackCadastroType === 'sucesso' ? 'Sucesso!' : 'Atenção!' }}</p>
+        <p>{{ feedbackCadastroMessage }}</p>
+        <div class="btns-msg">
+          <button @click="fecharFeedbackCadastroModal">Ok</button>
+        </div>
       </div>
     </div>
   `,

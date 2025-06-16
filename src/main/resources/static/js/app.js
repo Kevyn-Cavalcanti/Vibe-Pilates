@@ -95,9 +95,9 @@ const app = {
                 <ul class="nav-list">
                     <li><router-link to="/home" class="navbtn">Home</router-link></li>
                     <li><router-link to="/agendar" class="navbtn">Agendar Aula</router-link></li>
+					<li><router-link to="/calendario/${localStorage.getItem("usuarioId")}" class="navbtn">Calendário</router-link></li>
                     <li v-if="ehAdmin"><router-link to="/gerenciarPolos" class="navbtn">Gerenciar Polos</router-link></li>
                     <li v-if="ehAdmin"><router-link to="/usuarios" class="navbtn">Usuarios</router-link></li>
-					<li><router-link to="/calendario/${localStorage.getItem("usuarioId")}" class="navbtn">Calendário</router-link></li>
                     <li><router-link to="/conta" class="navbtn">Conta</router-link></li>
                 </ul>
             </nav>

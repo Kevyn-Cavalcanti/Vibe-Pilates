@@ -1,4 +1,3 @@
-/* Container principal da tela de gerenciamento de usuários */
 .users-page-container { /* Renomeado de .usuarios-section */
   width: 90%; /* Ajusta a largura para ser responsiva */
   max-width: 80rem; /* Limite máximo de largura para telas grandes */
@@ -95,6 +94,7 @@
 /* Estilos para as células de ações */
 .users-table-actions { /* Renomeado de .tabela-acoes */
   display: flex;
+  justify-content: center;
   gap: 0.5rem;
   flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas pequenas */
 }
@@ -255,7 +255,7 @@
   margin-bottom: 1.5rem;
 }
 
-.users-modal-text-confirm {
+users-modal-text-confirm {
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
   color: var(--white-color);

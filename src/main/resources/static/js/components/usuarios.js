@@ -203,11 +203,6 @@ export const Usuarios = {
     <section class="users-page-container">
       <h1 class="users-page-title">Gerenciamento de Usuários</h1>
 
-      <!-- Mensagem de feedback (sucesso/erro para operações imediatas) -->
-      <div v-if="mensagemFeedback && !mostrarConfirmacaoModal" :class="['users-feedback-message', mensagemTipo]">
-        {{ mensagemFeedback }}
-      </div>
-
       <div v-if="carregandoUsuarios" class="users-loading-message">Carregando usuários...</div>
 
       <div v-else class="users-content-wrapper">

@@ -9,6 +9,8 @@ export const GerenciarPolos = {
       mensagemFeedback: '',
       mensagemTipo: '',
       showDeleteConfirm: false,
+      mostrarConfirmacaoModal: false,
+      modalMessage: '', 
     };
   },
   async mounted() {
@@ -101,24 +103,26 @@ export const GerenciarPolos = {
         try {
           data = JSON.parse(text);
         } catch (jsonErr) {
-          throw new Error('Resposta inválida do servidor: ' + text);
+          data = { mensagem: text };
         }
 
         if (!response.ok) {
-          throw new Error(data.error || 'Erro ao excluir polo.');
+          this.modalMessage = data.mensagem || 'Erro ao excluir polo.';
+          this.mensagemTipo = 'erro';
+        } else {
+          this.polos = this.polos.filter(p => p.idPolo !== this.poloParaExcluir.idPolo);
+          this.modalMessage = data.mensagem || 'Polo excluído com sucesso!';
+          this.mensagemTipo = 'sucesso';
         }
-
-        this.polos = this.polos.filter(p => p.idPolo !== this.poloParaExcluir.idPolo);
-        this.mensagemFeedback = data.mensagem || 'Polo excluído com sucesso!';
-        this.mensagemTipo = 'sucesso';
         this.showDeleteConfirm = false;
-        alert(this.mensagemFeedback);
+        this.mostrarConfirmacaoModal = true;
+
       } catch (err) {
-        this.mensagemFeedback = err.message;
+        this.modalMessage = `Erro na requisição: ${err.message}`;
         this.mensagemTipo = 'erro';
         console.error('Erro ao excluir polo:', err);
         this.showDeleteConfirm = false;
-        alert(this.mensagemFeedback);
+        this.mostrarConfirmacaoModal = true;
       } finally {
         this.poloParaExcluir = null;
       }
@@ -138,20 +142,23 @@ export const GerenciarPolos = {
         this.$router.push('/criarPolo');
       }
     },
+    
+    fecharConfirmacaoModal() {
+      this.mostrarConfirmacaoModal = false;
+      this.modalMessage = '';
+      this.mensagemFeedback = '';
+      this.mensagemTipo = '';
+    }
   },
 
   template: `
     <section class="users-page-container">
       <h1 class="users-page-title">Gerenciamento de Polos</h1>
 
-      <div v-if="mensagemFeedback" :class="['users-feedback-message', mensagemTipo]">
-        {{ mensagemFeedback }}
-      </div>
-
       <div v-if="carregandoPolos || carregandoUsuarios" class="users-loading-message">Carregando polos e usuários...</div>
 
       <div v-else class="users-content-wrapper">
-        <button class="users-action-button-add" @click="criarOuEditarPolo()">+ Criar Novo Polo</button>
+        <button class="gerenciar-polos-add-button" @click="criarOuEditarPolo()">+ Criar Novo Polo</button>
 
         <div class="users-table-container">
           <table class="users-table">
@@ -190,6 +197,17 @@ export const GerenciarPolos = {
           <div class="users-modal-actions">
             <button class="users-btn-danger" @click="excluirPolo">Sim, excluir</button>
             <button class="users-btn-secondary" @click="cancelarExclusao">Voltar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal de Mensagem de Sucesso/Erro (globalizado) -->
+      <div v-if="mostrarConfirmacaoModal" :class="['users-modal-overlay']">
+        <div class="users-modal-content">
+          <h2>{{ mensagemTipo === 'sucesso' ? 'Sucesso!' : 'Atenção!' }}</h2>
+          <p class="users-modal-text-confirm">{{ modalMessage }}</p>
+          <div class="users-modal-actions">
+            <button @click="fecharConfirmacaoModal" class="users-btn-secondary">Ok</button>
           </div>
         </div>
       </div>

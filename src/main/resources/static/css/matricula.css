@@ -5,7 +5,6 @@
   align-items: flex-start; /* Alinha o conteúdo ao topo */
   min-height: 100vh; /* Garante que o container ocupe a altura total da viewport */
   width: 100%; /* Ocupa a largura total para o flexbox */
-  padding: 2rem; /* Adicionado padding para dar espaço ao botão */
   position: relative; /* Essencial para o posicionamento absoluto do #btn-voltar */
 }
 
@@ -19,7 +18,7 @@
   /* Removido: margin-left: 3rem; - Esta era a causa do problema de centralização */
 }
 
-#btn-voltar {
+#btn-voltar, #btn-voltar-criar-polo {
   position: absolute; /* Agora posicionado absolutamente */
   left: 2rem; /* Distância da borda esquerda de .matricula */
   top: 2rem; /* Distância da borda superior de .matricula */
@@ -38,7 +37,6 @@
   align-items: center;
   justify-content: center;
   gap: 5px; /* Espaçamento entre o ícone e o texto */
-  /* Removido: margin-top: 1rem; pois 'top' já controla a posição vertical */
 }
 
 .titulo {
