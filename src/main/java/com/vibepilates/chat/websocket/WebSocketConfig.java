@@ -1,4 +1,4 @@
-package com.vibepilates.config;
+package com.vibepilates.chat.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;

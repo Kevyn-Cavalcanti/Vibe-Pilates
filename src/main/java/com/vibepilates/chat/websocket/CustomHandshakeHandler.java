@@ -1,4 +1,4 @@
-package com.vibepilates.config;
+package com.vibepilates.chat.websocket;
 
 import java.security.Principal;
 import java.util.Map;
