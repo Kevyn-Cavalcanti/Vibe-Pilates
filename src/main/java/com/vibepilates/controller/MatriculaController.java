@@ -47,18 +47,18 @@ public class MatriculaController {
         }
     }
     
-    @GetMapping("/usuario/{nome}")
-    public ResponseEntity<?> getMatriculasPorNome(@PathVariable String nome) {
-        Optional<Usuario> usuario = usuarioRepository.findByNome(nome);
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<?> getMatriculasPorId(@PathVariable String id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("❌ Usuário com nome " + nome + " não encontrado.");
+                    .body("❌ Usuário com nome " + id + " não encontrado.");
         }
 
         List<Matrícula> matriculas = repository.findByIdUsuario(usuario.get().getIdUsuario());
         if (matriculas.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("❌ Nenhuma matrícula encontrada para o usuário " + nome + ".");
+                    .body("❌ Nenhuma matrícula encontrada para o usuário " + id + ".");
         }
 
         return ResponseEntity.ok(matriculas);

@@ -20,7 +20,7 @@ const routes = [
     { path: '/criarPolo', component: CriarPolo },
 	{ path: '/criarPolo/:idPolo', component: CriarPolo },
     { path: '/usuarios', component: Usuarios },
-	{ path: '/calendario/:usuarioNome', name: 'Calendario', component: Calendario, props: true}
+	{ path: '/calendario/:usuarioId', name: 'Calendario', component: Calendario, props: true}
 ];
 
 const router = VueRouter.createRouter({
@@ -95,9 +95,9 @@ const app = {
                 <ul class="nav-list">
                     <li><router-link to="/home" class="navbtn">Home</router-link></li>
                     <li><router-link to="/agendar" class="navbtn">Agendar Aula</router-link></li>
-                    <li v-if="ehAdmin"><router-link to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
                     <li v-if="ehAdmin"><router-link to="/gerenciarPolos" class="navbtn">Gerenciar Polos</router-link></li>
                     <li v-if="ehAdmin"><router-link to="/usuarios" class="navbtn">Usuarios</router-link></li>
+					<li><router-link to="/calendario/${localStorage.getItem("usuarioId")}" class="navbtn">Calendário</router-link></li>
                     <li><router-link to="/conta" class="navbtn">Conta</router-link></li>
                 </ul>
             </nav>

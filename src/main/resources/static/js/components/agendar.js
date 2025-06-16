@@ -82,7 +82,7 @@ export const Agendar = {
           this.etapaFormulario = 1;
         } else {
           console.log('Usuário já possui endereço, prosseguindo com a matrícula.');
-          this.$router.push(`/matricula/${polo.id}`);
+          this.$router.push(`/matricula/${polo.idPolo}`);
         }
       } catch (erro) {
         console.error("Erro ao verificar dados do usuário para matrícula:", erro);

@@ -1,5 +1,5 @@
 export const Calendario = {
-  props: ['usuarioNome'],
+  props: ['usuarioId'],
   data() {
     return {
       reservas: [],
@@ -22,7 +22,7 @@ export const Calendario = {
 
     async buscaMatricula() {
       try {
-        const response = await fetch(`http://localhost:8080/matricula/usuario/${encodeURIComponent(this.usuarioNome)}`);
+        const response = await fetch(`http://localhost:8080/matricula/usuario/${encodeURIComponent(this.usuarioId)}`);
         const data = await response.json();
 
         console.log('Resposta da API (matrícula):', data);
@@ -172,7 +172,7 @@ export const Calendario = {
   template: `
     <div id="container-calendario">
 
-      <h2 class="title-calendario">Aulas Agendadas para o usuário: {{ usuarioNome }}</h2>
+      <!--<h2 class="title-calendario">Aulas Agendadas para o usuário: {{ usuarioId }}</h2>-->
 
       <div id="calendar"></div>
 
