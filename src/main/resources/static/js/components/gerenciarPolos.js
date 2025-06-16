@@ -2,7 +2,9 @@ export const GerenciarPolos = {
   data() {
     return {
       polos: [],
+      usuarios: [],
       carregandoPolos: true,
+      carregandoUsuarios: true,
       poloParaExcluir: null,
       mensagemFeedback: '',
       mensagemTipo: '',
@@ -10,90 +12,147 @@ export const GerenciarPolos = {
     };
   },
   async mounted() {
+    await this.carregarUsuarios();
     await this.carregarPolos();
   },
   methods: {
+    async carregarUsuarios() {
+      this.carregandoUsuarios = true;
+      try {
+        const response = await fetch('/usuario');
+        const text = await response.text();
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          throw new Error('Resposta inválida do servidor: ' + text);
+        }
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Erro ao carregar usuários.');
+        }
+
+        this.usuarios = data;
+      } catch (err) {
+        this.mensagemFeedback = err.message;
+        this.mensagemTipo = 'erro';
+        console.error('Erro ao carregar usuários:', err);
+      } finally {
+        this.carregandoUsuarios = false;
+      }
+    },
+
     async carregarPolos() {
       this.carregandoPolos = true;
       try {
-        const response = await fetch("/polo"); 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Erro ao carregar polos.");
+        const response = await fetch('/polo');
+        const text = await response.text();
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          throw new Error('Resposta inválida do servidor: ' + text);
         }
-        this.polos = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Erro ao carregar polos.');
+        }
+
+        this.polos = data.map(polo => {
+          const usuario = this.usuarios.find(u => u.idUsuario === polo.idUsuario);
+          return {
+            ...polo,
+            nomeResponsavel: usuario ? usuario.nome : 'N/A'
+          };
+        });
+
         this.mensagemFeedback = '';
         this.mensagemTipo = '';
       } catch (err) {
-        this.mensagemFeedback = `❌ ${err.message}`;
+        this.mensagemFeedback = err.message;
         this.mensagemTipo = 'erro';
-        console.error("Erro ao carregar polos:", err);
+        console.error('Erro ao carregar polos:', err);
       } finally {
         this.carregandoPolos = false;
       }
     },
-    confirmarExclusao(polo) {
+
+    confirmarExclusao(poloId) {
+      const polo = this.polos.find(p => p.idPolo === poloId);
       this.poloParaExcluir = polo;
       this.showDeleteConfirm = true;
       this.mensagemFeedback = '';
       this.mensagemTipo = '';
     },
+
     async excluirPolo() {
       if (!this.poloParaExcluir) return;
 
       try {
-        const response = await fetch(`/polo/${this.poloParaExcluir.id}`, { 
-          method: 'DELETE'
+        const response = await fetch(`/polo/${this.poloParaExcluir.idPolo}`, {
+          method: 'DELETE',
         });
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Erro ao excluir polo.");
+
+        const text = await response.text();
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          throw new Error('Resposta inválida do servidor: ' + text);
         }
-        const data = await response.json();
-        this.polos = this.polos.filter(p => p.id !== this.poloParaExcluir.id);
-        this.mensagemFeedback = data.mensagem || "Polo excluído com sucesso!";
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Erro ao excluir polo.');
+        }
+
+        this.polos = this.polos.filter(p => p.idPolo !== this.poloParaExcluir.idPolo);
+        this.mensagemFeedback = data.mensagem || 'Polo excluído com sucesso!';
         this.mensagemTipo = 'sucesso';
         this.showDeleteConfirm = false;
         alert(this.mensagemFeedback);
       } catch (err) {
-        this.mensagemFeedback = `❌ ${err.message}`;
+        this.mensagemFeedback = err.message;
         this.mensagemTipo = 'erro';
-        console.error("Erro ao excluir polo:", err);
+        console.error('Erro ao excluir polo:', err);
         this.showDeleteConfirm = false;
         alert(this.mensagemFeedback);
       } finally {
         this.poloParaExcluir = null;
       }
     },
+
     cancelarExclusao() {
       this.poloParaExcluir = null;
       this.showDeleteConfirm = false;
       this.mensagemFeedback = '';
       this.mensagemTipo = '';
     },
-    criarOuEditarPolo(polo = null) {
-      if (polo) {
-        this.$router.push(`/criarPolo/${polo.id}`); 
+
+    criarOuEditarPolo(poloId = null) {
+      if (poloId) {
+        this.$router.push(`/criarPolo/${poloId}`);
       } else {
-        this.$router.push('/criarPolo'); 
+        this.$router.push('/criarPolo');
       }
     },
   },
+
   template: `
     <section class="users-page-container">
       <h1 class="users-page-title">Gerenciamento de Polos</h1>
 
-      <!-- Mensagem de feedback (sucesso/erro para operações imediatas) -->
       <div v-if="mensagemFeedback" :class="['users-feedback-message', mensagemTipo]">
         {{ mensagemFeedback }}
       </div>
 
-      <div v-if="carregandoPolos" class="users-loading-message">Carregando polos...</div>
+      <div v-if="carregandoPolos || carregandoUsuarios" class="users-loading-message">Carregando polos e usuários...</div>
 
       <div v-else class="users-content-wrapper">
-        <!-- Botão para criar um novo polo -->
         <button class="users-action-button-add" @click="criarOuEditarPolo()">+ Criar Novo Polo</button>
-        
+
         <div class="users-table-container">
           <table class="users-table">
             <thead>
@@ -105,14 +164,15 @@ export const GerenciarPolos = {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="polo in polos" :key="polo.id">
+              <tr v-for="polo in polos" :key="polo.idPolo">
                 <td id="td-nome">{{ polo.nome }}</td>
-                <td>{{ polo.endereco ? polo.endereco.rua + ', ' + polo.endereco.numero + ', ' + polo.endereco.cidade : 'N/A' }}</td>
-                <!-- Pode ser necessário buscar o nome do responsável se o backend retornar apenas o ID -->
-                <td>{{ polo.idUsuario ? polo.idUsuario : 'N/A' }}</td> 
+                <td>
+                  {{ polo.endereco ? polo.endereco.rua + ', ' + polo.endereco.numero + ', ' + polo.endereco.cidade : 'N/A' }}
+                </td>
+                <td>{{ polo.nomeResponsavel }}</td>
                 <td class="users-table-actions">
-                  <button class="users-action-button-edit" @click="criarOuEditarPolo(polo)">Editar</button>
-                  <button class="users-action-button-delete" @click="confirmarExclusao(polo)">Excluir</button>
+                  <button class="users-action-button-edit" @click="criarOuEditarPolo(polo.idPolo)">Editar</button>
+                  <button class="users-action-button-delete" @click="confirmarExclusao(polo.idPolo)">Excluir</button>
                 </td>
               </tr>
             </tbody>
@@ -120,28 +180,19 @@ export const GerenciarPolos = {
         </div>
       </div>
 
-      <!-- Modal de Confirmação de Exclusão (com estilo do Usuarios) -->
       <div v-if="showDeleteConfirm" class="users-modal-overlay">
         <div class="users-modal-content">
           <p class="users-modal-icon-alert">!</p>
-          <p class="users-modal-text-confirm">Você tem certeza que deseja excluir o polo <strong>{{ poloParaExcluir ? poloParaExcluir.nome : '' }}</strong>?</p>
+          <p class="users-modal-text-confirm">
+            Você tem certeza que deseja excluir o polo
+            <strong>{{ poloParaExcluir ? poloParaExcluir.nome : '' }}</strong>?
+          </p>
           <div class="users-modal-actions">
             <button class="users-btn-danger" @click="excluirPolo">Sim, excluir</button>
             <button class="users-btn-secondary" @click="cancelarExclusao">Voltar</button>
           </div>
         </div>
       </div>
-
-      <!-- Modal de Mensagem de Sucesso/Erro (globalizado) - se esta tela tiver seu próprio feedback modal -->
-      <!-- Exemplo:
-      <div v-if="mostrarConfirmacaoModal" :class="['users-modal-overlay']">
-        <div class="users-modal-content">
-          <h2>{{ mensagemTipo === 'sucesso' ? 'Sucesso!' : 'Atenção!' }}</h2>
-          <p class="users-modal-text-confirm">{{ modalMessage }}</p>
-          <button @click="fecharConfirmacaoModal" class="users-btn-secondary">Ok</button>
-        </div>
-      </div>
-      -->
     </section>
   `,
 };

@@ -36,11 +36,19 @@ export const CriarPolo = {
     // Retorna apenas usuários com permissão "Instrutor"
     instrutoresFiltrados() {
       return this.usuarios.filter(usuario => usuario.permissao === 'Instrutor');
-    }
+    },
+	estaEditando() {
+	  return !!this.$route.params.idPolo;
+	}
+
   },
   async mounted() {
-    // Ao carregar o componente, buscamos a lista de usuários para popular os dropdowns
     await this.fetchUsuarios();
+
+    const id = this.$route.params.idPolo;
+    if (id) {
+      await this.carregarPoloExistente(id);
+    }
   },
   methods: {
     // Método para buscar a lista de usuários do backend
@@ -174,37 +182,34 @@ export const CriarPolo = {
     removerPlano(index) {
       this.openDeleteConfirmationModal('Remover Plano?', 'Tem certeza que deseja remover este plano?', this.doRemovePlano, [index]);
     },
-    async enviarFormulario() {
-      console.log('Dados enviados para o backend:', JSON.stringify(this.polo, null, 2));
-      this.mensagemTipo = '';
+	async enviarFormulario() {
+	  const temId = !!this.polo.idPolo;
+	  const url = temId ? `/polo/${this.polo.idPolo}` : '/polo';
+	  const metodo = temId ? 'PUT' : 'POST';
 
-      try {
-        const response = await fetch('/polo', { // Certifique-se de que esta URL está correta (ex: http://localhost:8080/polo)
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.polo)
-        });
+	  try {
+	    const response = await fetch(url, {
+	      method: metodo,
+	      headers: {
+	        'Content-Type': 'application/json'
+	      },
+	      body: JSON.stringify(this.polo)
+	    });
 
-        if (response.ok) {
-          const message = await response.text(); // O backend retorna uma String (ex: "Polo criado com sucesso!")
-          this.mensagemFeedback = message;
-          this.mensagemTipo = 'sucesso';
-          this.mostrarConfirmacaoModal = true;
-          console.log('Sucesso:', message);
-        } else {
-          const errorData = await response.json(); // Se o backend retornar um JSON de erro
-          this.mensagemFeedback = `Erro: ${errorData.error || response.statusText}`;
-          this.mensagemTipo = 'erro';
-          console.error('Erro ao criar polo:', errorData);
-        }
-      } catch (error) {
-        this.mensagemFeedback = 'Erro na requisição: Não foi possível conectar ao servidor do polo.';
-        this.mensagemTipo = 'erro';
-        console.error('Erro na requisição:', error);
-      }
-    },
+	    const data = await response.json();
+	    if (response.ok) {
+	      this.mensagemFeedback = data.mensagem || 'Sucesso!';
+	      this.mensagemTipo = 'sucesso';
+	      this.mostrarConfirmacaoModal = true;
+	    } else {
+	      this.mensagemFeedback = data.mensagem || 'Erro ao salvar polo.';
+	      this.mensagemTipo = 'erro';
+	    }
+	  } catch (error) {
+	    this.mensagemFeedback = 'Erro na requisição: Não foi possível conectar ao servidor.';
+	    this.mensagemTipo = 'erro';
+	  }
+	},
     // Método para resetar o formulário após o envio bem-sucedido
     resetFormulario() {
       this.polo = {
@@ -257,12 +262,28 @@ export const CriarPolo = {
       this.mostrarConfirmacaoModal = false; // Esconde o modal
       this.resetFormulario(); // Reseta o formulário
       this.$router.push('/agendar'); // Redireciona para a página de agendamento
-    }
+    },
+	async carregarPoloExistente(id) {
+	  try {
+	    const response = await fetch(`/polo/${id}`);
+	    if (response.ok) {
+	      const data = await response.json();
+	      this.polo = data;
+	      this.etapaFormulario = 1;
+	    } else {
+	      const erro = await response.json();
+	      this.mensagemFeedback = erro.mensagem || 'Erro ao carregar polo.';
+	      this.mensagemTipo = 'erro';
+	    }
+	  } catch (error) {
+	    this.mensagemFeedback = 'Erro ao buscar dados do polo.';
+	    this.mensagemTipo = 'erro';
+	  }
+	}
   },
   template: `
     <section class="criar-polo">
-    <h1 class="titulo">Criar Polo</h1>
-
+    <h1 class="titulo">{{ estaEditando ? 'Editar Polo' : 'Criar Polo' }}</h1>
     <form class="form-polo" @submit.prevent="etapaFormulario === 1 || etapaFormulario === 2 ? avancarEtapa() : enviarFormulario()">
       <!-- Etapa 1: Dados do Polo e Usuário Responsável -->
       <div v-if="etapaFormulario === 1">
@@ -358,7 +379,7 @@ export const CriarPolo = {
         </div>
 
         <!-- Botão de Envio final -->
-        <button type="submit" class="btn-enviar">Criar Polo</button>
+        <button type="submit" class="btn-enviar">{{ estaEditando ? 'Editar Polo' : 'Criar Polo' }}</button>
       </div>
     </form>
 

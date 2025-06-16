@@ -18,6 +18,7 @@ const routes = [
     { path: '/chat/:username', component: Chat, name: 'chat' },
     { path: '/gerenciarPolos', component: GerenciarPolos },
     { path: '/criarPolo', component: CriarPolo },
+	{ path: '/criarPolo/:idPolo', component: CriarPolo },
     { path: '/usuarios', component: Usuarios },
 	{ path: '/calendario/:usuarioNome', name: 'Calendario', component: Calendario, props: true}
 ];
