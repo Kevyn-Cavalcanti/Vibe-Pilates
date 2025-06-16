@@ -8,7 +8,7 @@ export const CriarPolo = {
       usuarios: [],
       etapaFormulario: 1,
       polo: {
-        id: null,
+        idPolo: null,
         idUsuario: null,
         nome: '',
         endereco: {
@@ -33,17 +33,17 @@ export const CriarPolo = {
       return this.usuarios.filter(usuario => usuario.permissao !== 'Aluno');
     },
     estaEditando() {
-      return !!this.polo.id;
+      return this.isEditing;
     }
   },
   async mounted() {
     await this.fetchUsuarios();
 
-    const poloIdFromRoute = this.$route.query.id;
+	const poloIdFromRoute = this.$route.params.idPolo;
     if (poloIdFromRoute) {
-      this.polo.id = poloIdFromRoute;
+      this.polo.idPolo = poloIdFromRoute;
       this.isEditing = true;
-      await this.carregarPoloParaEdicao(this.polo.id);
+      await this.carregarPoloParaEdicao(this.polo.idPolo);
     }
   },
   methods: {
@@ -193,7 +193,7 @@ export const CriarPolo = {
         preco: parseFloat(String(plano.preco).replace(/[R$\s.]/g, '').replace(',', '.'))
       }));
 
-      const url = this.isEditing ? `/polo/${this.polo.id}` : '/polo';
+      const url = this.isEditing ? `/polo/${this.polo.idPolo}` : '/polo';
       const method = this.isEditing ? 'PUT' : 'POST';
 
       try {
@@ -237,7 +237,7 @@ export const CriarPolo = {
     },
     resetFormulario() {
       this.polo = {
-        id: null,
+        idPolo: null,
         idUsuario: null,
         nome: '',
         endereco: {
