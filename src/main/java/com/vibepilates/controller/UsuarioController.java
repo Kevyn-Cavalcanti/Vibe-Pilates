@@ -112,13 +112,13 @@ public class UsuarioController {
 
         if (email == null || senha == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "❌ Email e senha são necessários para o login."));
+                    .body(Map.of("error", "Email e senha são necessários para o login."));
         }
 
         Optional<Usuario> optionalUsuario = repository.findByEmail(email);
         if (optionalUsuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "❌ Email inválido."));
+                    .body(Map.of("error", "Email inválido."));
         }
 
         Usuario usuario = optionalUsuario.get();
@@ -131,7 +131,7 @@ public class UsuarioController {
 
         if (!passwordEncoder.matches(senha, usuario.getSenha())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "❌ Senha incorreta."));
+                    .body(Map.of("error", "Senha incorreta."));
         }
         
         Map<String, Object> response = Map.of(
