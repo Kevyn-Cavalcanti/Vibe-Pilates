@@ -312,7 +312,7 @@ export const Matricula = {
 
         <!-- Modal de Confirmação -->
         <div class="modal-overlay-confirm" v-if="mostrarConfirmacaoModal">
-          <div class="modal-content">
+          <div class="modal-content-confirm">
             <h2>Matrícula Realizada!</h2>
             <p>{{ mensagemFeedback }}</p>
             <button id="btn-confirmar-matricula" @click="fecharConfirmacaoModal">Fechar</button>

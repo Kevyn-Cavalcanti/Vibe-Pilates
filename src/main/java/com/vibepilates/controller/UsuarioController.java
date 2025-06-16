@@ -59,6 +59,7 @@ public class UsuarioController {
     public ResponseEntity<Map<String, String>> create(@RequestBody Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setDataCad(new Date());
+        usuario.setEstado(true); // Garante que o estado seja true ao criar
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("mensagem", "✅ Usuário criado com sucesso!"));
@@ -74,9 +75,11 @@ public class UsuarioController {
 
         Usuario usuarioExistente = usuarioExistenteOpt.get();
 
+        // Copia propriedades, ignorando nulas, mas permitindo que 'estado' e 'permissao' sejam atualizados mesmo se forem false/null no request, se o usuário mandar
         BeanUtils.copyProperties(usuario, usuarioExistente, getNullPropertyNames(usuario));
 
-        if (usuario.getSenha() != null) {
+        // Se a senha for enviada no payload, ela é atualizada. Caso contrário, mantém a antiga.
+        if (usuario.getSenha() != null && !usuario.getSenha().isEmpty()) { // Adicionado verificação para senha não vazia
             usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
 
@@ -120,19 +123,25 @@ public class UsuarioController {
 
         Usuario usuario = optionalUsuario.get();
 
+        // Verifica o estado do usuário antes de verificar a senha
+        if (!usuario.isEstado()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Sua conta está inativa. Por favor, entre em contato conosco para reativá-la!"));
+        }
+
         if (!passwordEncoder.matches(senha, usuario.getSenha())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "❌ Senha incorreta."));
         }
         
         Map<String, Object> response = Map.of(
-            "message", "✅ Login bem-sucedido.",
-            "usuario", Map.of(
-                "idUsuario", usuario.getIdUsuario(),
-                "nome", usuario.getNome(),
-                "email", usuario.getEmail(),
-                "permissao", usuario.getPermissao()
-            )
+                "message", "✅ Login bem-sucedido.",
+                "usuario", Map.of(
+                        "idUsuario", usuario.getIdUsuario(),
+                        "nome", usuario.getNome(),
+                        "email", usuario.getEmail(),
+                        "permissao", usuario.getPermissao()
+                )
         );
 
         return ResponseEntity.ok(response);

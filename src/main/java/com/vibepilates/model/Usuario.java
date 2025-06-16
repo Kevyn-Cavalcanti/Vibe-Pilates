@@ -17,13 +17,14 @@ public class Usuario {
     private String tipo;
     private Endereco endereco;
     private String cpf;
-    private boolean estado;
+    private boolean estado = true;
     private String permissao;
     private Date dataNasc;
     private Date dataCad;
     
 
     public Usuario() {
+        this.estado = true;
     }
 
     public String getIdUsuario() {
@@ -121,5 +122,4 @@ public class Usuario {
     public void setPermissao(String permissao) {
         this.permissao = permissao;
     }
-
 }

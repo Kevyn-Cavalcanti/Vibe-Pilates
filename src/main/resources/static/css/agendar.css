@@ -29,6 +29,13 @@
     width: 10px;
 }
 
+.nenhum-polo {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: var(--black-color);
+}
+
 .info {
     display: flex;
     flex-direction: column;

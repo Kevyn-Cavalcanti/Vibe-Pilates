@@ -25,36 +25,43 @@ export const Login = {
     };
   },
   methods: {
-	fazerLogin() {
-	  fetch("http://localhost:8080/usuario/login", {
-	    method: "POST",
-	    headers: { "Content-Type": "application/json" },
-	    body: JSON.stringify(this.login)
-	  })
-	    .then(response => {
-	      if (!response.ok) throw new Error("Usuário ou senha inválidos. Tente novamente.");
-	      return response.json();
-	    })
-	    .then(data => {
-	      this.erroLogin = '';
-	      localStorage.setItem("usuarioId", data.usuario.idUsuario);
-	      localStorage.setItem("usuarioNome", data.usuario.nome);
-	      localStorage.setItem("usuarioEmail", data.usuario.email);
-		  localStorage.setItem("usuarioPermissao", data.usuario.permissao);
-	      this.$router.push('/home');
-		  this.$router.replace('/home');
-		  
-	      const valor = localStorage.getItem("usuarioId");
-	      if (valor !== null) {
-	        console.log(localStorage.getItem("usuarioId"));
-	      } else {
-	        console.log('nao.');
-	      }
-	    })
-	    .catch(error => {
-	      this.erroLogin = error.message;
-	    });
-	},
+    async fazerLogin() {
+      this.erroLogin = ''; 
+
+      try {
+        const response = await fetch("http://localhost:8080/usuario/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(this.login)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json(); 
+          throw new Error(errorData.error || "Usuário ou senha inválidos. Tente novamente.");
+        }
+
+        const data = await response.json();
+        
+        localStorage.setItem("usuarioId", data.usuario.idUsuario);
+        localStorage.setItem("usuarioNome", data.usuario.nome);
+        localStorage.setItem("usuarioEmail", data.usuario.email);
+        localStorage.setItem("usuarioPermissao", data.usuario.permissao);
+        
+        this.$router.push('/home');
+        this.$router.replace('/home');
+
+        const valor = localStorage.getItem("usuarioId");
+        if (valor !== null) {
+          console.log("ID do usuário logado:", valor);
+        } else {
+          console.log('ID do usuário não encontrado no localStorage após login.');
+        }
+
+      } catch (error) {
+        this.erroLogin = error.message; 
+        console.error("Erro no login:", error);
+      }
+    },
     criarUsuario() {
       if (this.cadastro.senha !== this.cadastro.confirmarSenha) {
         this.erroCadastro = "As senhas devem ser iguais.";

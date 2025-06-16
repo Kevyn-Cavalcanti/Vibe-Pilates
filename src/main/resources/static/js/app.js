@@ -6,6 +6,8 @@ import { Matricula } from './components/matricula.js';
 import { Chat } from './components/chat.js';
 import { Calendario } from './components/calendario.js';
 import { CriarPolo } from './components/criarPolo.js';
+import { Usuarios } from './components/usuarios.js';
+import { GerenciarPolos } from './components/gerenciarPolos.js';
 
 const routes = [
     { path: '/', component: Login },
@@ -14,7 +16,9 @@ const routes = [
     { path: '/conta', component: Conta },
     { path: '/matricula/:id', component: Matricula, props: true},
     { path: '/chat/:username', component: Chat, name: 'chat' },
+    { path: '/gerenciarPolos', component: GerenciarPolos },
     { path: '/criarPolo', component: CriarPolo },
+    { path: '/usuarios', component: Usuarios },
 	{ path: '/calendario/:usuarioNome', name: 'Calendario', component: Calendario, props: true}
 ];
 
@@ -90,7 +94,9 @@ const app = {
                 <ul class="nav-list">
                     <li><router-link to="/home" class="navbtn">Home</router-link></li>
                     <li><router-link to="/agendar" class="navbtn">Agendar Aula</router-link></li>
-                    <li v-if="podeCriarPolo"><router-link to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
+                    <li v-if="ehAdmin"><router-link to="/criarPolo" class="navbtn">Criar Polo</router-link></li>
+                    <li v-if="ehAdmin"><router-link to="/gerenciarPolos" class="navbtn">Gerenciar Polos</router-link></li>
+                    <li v-if="ehAdmin"><router-link to="/usuarios" class="navbtn">Usuarios</router-link></li>
                     <li><router-link to="/conta" class="navbtn">Conta</router-link></li>
                 </ul>
             </nav>

@@ -2,6 +2,7 @@ export const Agendar = {
   data() {
     return {
       polos: [],
+      carregandoPolos: true, 
       mostrarFormulario: false,
       mostrarMensagem: false,
       etapaFormulario: 1,
@@ -21,27 +22,71 @@ export const Agendar = {
   },
   methods: {
     async carregarPolos() {
-      const resposta = await fetch('/polo');
-      const polos = await resposta.json();
+      this.carregandoPolos = true;
+      try {
+        const resposta = await fetch('/polo');
+        if (!resposta.ok) {
+          throw new Error(`Erro ao buscar polos: ${resposta.statusText}`);
+        }
+        
+        const polosData = await resposta.json();
 
-      for (const polo of polos) {
-        const respostaUsuario = await fetch(`/usuario/${polo.idUsuario}`);
-        const usuario = await respostaUsuario.json();
-        polo.professor = usuario.nome;
+        if (!Array.isArray(polosData) || polosData.length === 0) {
+          this.polos = [];
+          return;
+        }
+
+        const polosComProfessor = await Promise.all(polosData.map(async (polo) => {
+          if (polo.idUsuario) {
+            try {
+              const respostaUsuario = await fetch(`/usuario/${polo.idUsuario}`);
+              if (respostaUsuario.ok) {
+                const usuario = await respostaUsuario.json();
+                return { ...polo, professor: usuario.nome };
+              } else {
+                console.warn(`Usuário com ID ${polo.idUsuario} não encontrado para o polo ${polo.nome}`);
+                return { ...polo, professor: 'Não Atribuído' };
+              }
+            } catch (error) {
+              console.error(`Erro ao buscar usuário ${polo.idUsuario} para o polo ${polo.nome}:`, error);
+              return { ...polo, professor: 'Erro ao Carregar' };
+            }
+          }
+          return { ...polo, professor: 'N/A' };
+        }));
+
+        this.polos = polosComProfessor;
+      } catch (erro) {
+        console.error("Erro ao carregar polos:", erro);
+        this.polos = [];
+      } finally {
+        this.carregandoPolos = false;
       }
-
-      this.polos = polos;
     },
     async marcarAula(polo) {
       const id = localStorage.getItem("usuarioId");
-      const resposta = await fetch(`/usuario/${id}`);
-      const dados = await resposta.json();
-      if (dados.endereco == null) {
-        this.mostrarMensagem = true;
-        this.etapaFormulario = 1;
-      } else {
-        console.log('já tem, segue com polo');
-        this.$router.push(`/matricula/${polo.idPolo}`);
+      if (!id) {
+        console.error("ID do usuário não encontrado no localStorage.");
+        return;
+      }
+
+      try {
+        const resposta = await fetch(`/usuario/${id}`);
+        if (!resposta.ok) {
+          throw new Error(`Erro ao buscar dados do usuário: ${resposta.statusText}`);
+        }
+        const dados = await resposta.json();
+
+        if (dados.endereco == null) {
+          this.mostrarMensagem = true;
+          this.etapaFormulario = 1;
+        } else {
+          console.log('Usuário já possui endereço, prosseguindo com a matrícula.');
+          this.$router.push(`/matricula/${polo.id}`);
+        }
+      } catch (erro) {
+        console.error("Erro ao verificar dados do usuário para matrícula:", erro);
+        alert("❌ Ocorreu um erro ao verificar seus dados. Tente novamente.");
       }
     },
     avancarEtapa() {
@@ -50,6 +95,11 @@ export const Agendar = {
     async finalizarCadastro() {
       this.mostrarMensagem = false;
       const id = localStorage.getItem("usuarioId");
+      if (!id) {
+        console.error("ID do usuário não encontrado no localStorage ao finalizar cadastro.");
+        alert("❌ Erro: ID do usuário não disponível. Por favor, faça login novamente.");
+        return;
+      }
 
       const payload = {
         telefone: this.cadastroCompleto.telefone,
@@ -76,14 +126,15 @@ export const Agendar = {
         });
 
         if (!resposta.ok) {
-          throw new Error('Erro ao atualizar os dados do usuário.');
+          const errorText = await resposta.text();
+          throw new Error(`Erro ao atualizar os dados do usuário: ${errorText}`);
         }
 
         alert("Cadastro finalizado com sucesso!");
         this.mostrarFormulario = false;
       } catch (erro) {
         console.error(erro);
-        alert("❌ Ocorreu um erro ao salvar os dados. Tente novamente.");
+        alert(`❌ Ocorreu um erro ao salvar os dados: ${erro.message}. Tente novamente.`);
       }
     },
     fecharFormulario() {
@@ -104,7 +155,11 @@ export const Agendar = {
       };
     },
     abrirChat(polo) {
-	  this.$router.push(`/chat/${polo.professor}`);
+      if (polo.professor && polo.professor !== 'N/A' && polo.professor !== 'Erro ao Carregar') {
+        this.$router.push(`/chat/${polo.professor}`); 
+      } else {
+        alert("Não é possível abrir o chat para este polo no momento.");
+      }
     },
     formatarTelefone() {
       let telefone = this.cadastroCompleto.telefone.replace(/\D/g, '');
@@ -165,33 +220,32 @@ export const Agendar = {
       }
     }, 
     corrigirData() {
-  const data = this.cadastroCompleto.dataNascimento;
-  const regex = /^\d{4}-\d{2}-\d{2}$/;
+      const data = this.cadastroCompleto.dataNascimento;
+      const regex = /^\d{4}-\d{2}-\d{2}$/;
 
-  if (!regex.test(data)) {
-    this.cadastroCompleto.dataNascimento = "";
-    return;
-  }
+      if (!regex.test(data)) {
+        this.cadastroCompleto.dataNascimento = "";
+        return;
+      }
 
-  const ano = parseInt(data.split('-')[0]);
-  if (ano > 9999) {
-    this.cadastroCompleto.dataNascimento = "";
-  }
-  }
+      const ano = parseInt(data.split('-')[0]);
+      if (ano > 9999) {
+        this.cadastroCompleto.dataNascimento = "";
+      }
+    }
   },
   async mounted() {
-    try {
-      await this.carregarPolos();
-    } catch (err) {
-      console.error("Erro ao carregar polos:", err);
-    }
+    await this.carregarPolos();
   },
   template: `
     <div class="div-cards">
-      <div class="cards">
+      <div v-if="carregandoPolos" class="loading-message">
+        <p>Carregando polos...</p>
+      </div>
+      <div v-else-if="polos.length > 0" class="cards">
         <div class="polo" v-for="(polo, index) in polos" :key="index">
           <div class="info">
-            <h3>{{ polo.nome }} - Prof. {{ polo.professor }}</h3>
+            <h3>{{ polo.nome }} - Recepção, {{ polo.professor }}</h3>
             <button class="marcar-btn" @click="marcarAula(polo)">Fazer Matrícula</button>
           </div>
           <div alt="chat com o diretor do polo" class="chat-icon" @click="abrirChat(polo)">
@@ -199,22 +253,23 @@ export const Agendar = {
           </div>
         </div>
       </div>
+      <div v-else class="nenhum-polo">
+        <p>Nenhum polo disponível no momento. Por favor, volte mais tarde.</p>
+      </div>
     </div>
 
-        <!-- Modal de mensagem -->
-      <div v-if="mostrarMensagem && !mostrarFormulario" class="modal-overlay">
-        <div class="modal-content-msg">
-          <i id="icon-msg" class="fi fi-rr-info"></i>
-          <p id="msg-modal">Quase lá!</p>
-          <p>Antes de dar início à sua matrícula, precisamos só de algumas informações do seu perfil.</p>
-          <div class="btns-msg">
-            <button @click="mostrarMensagem = false">Fechar</button>
-            <button id="btn-prosseguir" @click="mostrarFormulario = true">Prosseguir</button>
-          </div>
+    <div v-if="mostrarMensagem && !mostrarFormulario" class="modal-overlay">
+      <div class="modal-content-msg">
+        <i id="icon-msg" class="fi fi-rr-info"></i>
+        <p id="msg-modal">Quase lá!</p>
+        <p>Antes de dar início à sua matrícula, precisamos só de algumas informações do seu perfil.</p>
+        <div class="btns-msg">
+          <button @click="mostrarMensagem = false">Fechar</button>
+          <button id="btn-prosseguir" @click="mostrarFormulario = true">Prosseguir</button>
         </div>
       </div>
+    </div>
 
-    <!-- Modal do formulário -->
     <div class="modal-overlay" v-if="mostrarFormulario">
       <div class="modal-content wraper">
         <button class="fechar-modal" @click="fecharFormulario"><i class="fi fi-br-cross"></i></button>
@@ -225,23 +280,19 @@ export const Agendar = {
         </div>
 
         <form class="cadastro-form" @submit.prevent="etapaFormulario === 1 ? avancarEtapa() : finalizarCadastro()">
-          <!-- Etapa 1 -->
           <div v-if="etapaFormulario === 1">
-            <!-- Telefone -->
             <div class="input-box" :class="{ filled: cadastroCompleto.telefone }">
               <input type="tel" class="input-field" v-model="cadastroCompleto.telefone" @input="formatarTelefone" maxlength="15" required pattern="\\(\\d{2}\\) \\d{5}-\\d{4}" title="Telefone no formato (11) 91234-5678"/>
               <label class="label tel">Telefone</label>
               <i class="fi fi-rr-phone-call" id="icon-login"></i>
             </div>
 
-            <!-- CPF -->
             <div class="input-box" :class="{ filled: cadastroCompleto.cpf }">
               <input type="text" class="input-field" v-model="cadastroCompleto.cpf" @input="formatarCPF" maxlength="14" required pattern="\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}" title="CPF no formato 123.456.789-00"/>
               <label class="label">CPF</label>
               <i class="fi fi-rr-id-card-clip-alt" id="icon-login"></i>
             </div>
 
-            <!-- Data de Nascimento -->
             <div class="input-box" :class="{ filled: cadastroCompleto.dataNascimento }">
               <input type="date" class="input-field-nasc" v-model="cadastroCompleto.dataNascimento" @change="corrigirData" required>
               <label class="label-nasc">Data de Nascimento</label>
@@ -250,56 +301,47 @@ export const Agendar = {
             <button class="btn-form" type="submit">Avançar</button>
           </div>
 
-          <!-- Etapa 2 -->
           <div v-if="etapaFormulario === 2">
-            <!-- Botão voltar -->
             <button class="voltar-modal" type="button" @click="etapaFormulario = 1">
               <i class="fi fi-rr-arrow-left"></i>
             </button>
 
-            <!-- CEP -->
             <div class="input-box" :class="{ filled: cadastroCompleto.cep }">
               <input type="text" class="input-field" v-model="cadastroCompleto.cep" @input="formatarCEP" maxlength="9" required pattern="\\d{5}-\\d{3}" title="CEP no formato 12345-678"/>
               <label class="label">CEP</label>
               <i class="fi fi-rr-map-marker" id="icon-login"></i>
             </div>
 
-            <!-- Rua -->
             <div class="input-box" :class="{ filled: cadastroCompleto.rua }">
               <input type="text" class="input-field" v-model="cadastroCompleto.rua" required>
               <label class="label">Rua</label>
               <i class="fi fi-rr-road" id="icon-login"></i>
             </div>
 
-            <!-- Número -->
             <div class="input-box" :class="{ filled: cadastroCompleto.numero }">
               <input type="text" class="input-field" v-model="cadastroCompleto.numero" required>
               <label class="label num">Número</label>
               <i class="fi fi-sr-hastag" id="icon-login"></i>
             </div>
 
-            <!-- Complemento -->
             <div class="input-box" :class="{ filled: cadastroCompleto.complemento }">
               <input type="text" class="input-field" v-model="cadastroCompleto.complemento" required>
               <label class="label comple">Complemento</label>
               <i class="fi fi-rr-apps-add" id="icon-login"></i>
             </div>
 
-            <!-- Bairro -->
             <div class="input-box" :class="{ filled: cadastroCompleto.bairro }">
               <input type="text" class="input-field" v-model="cadastroCompleto.bairro" required>
               <label class="label bairro">Bairro</label>
               <i class="fi fi-rr-home" id="icon-login"></i>
             </div>
 
-            <!-- Cidade -->
             <div class="input-box" :class="{ filled: cadastroCompleto.cidade }">
               <input type="text" class="input-field" v-model="cadastroCompleto.cidade" required>
               <label class="label cid">Cidade</label>
               <i class="fi fi-rr-building" id="icon-login"></i>
             </div>
 
-            <!-- Estado -->
             <div class="input-box" :class="{ filled: cadastroCompleto.estado }">
               <input type="text" class="input-field" v-model="cadastroCompleto.estado" required>
               <label class="label est">Estado</label>

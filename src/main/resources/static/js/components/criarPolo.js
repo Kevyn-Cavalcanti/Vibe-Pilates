@@ -18,11 +18,28 @@ export const CriarPolo = {
       },
       mensagemFeedback: '',
       mensagemTipo: '', // 'sucesso' ou 'erro'
-      mostrarConfirmacaoModal: false
+      mostrarConfirmacaoModal: false, // Modal para o envio do formulário
+
+      // Novas propriedades para o modal de confirmação de exclusão
+      showDeleteConfirmationModal: false,
+      deleteConfirmationTitle: '', // Título não usado neste estilo de modal, mas mantido para consistência
+      deleteConfirmationMessage: '',
+      deleteConfirmationCallback: null, // Função a ser chamada se o usuário confirmar
+      deleteConfirmationArgs: [], // Argumentos para a função de callback
     };
   },
+  computed: {
+    // Retorna apenas usuários com permissão "Recepcionista"
+    recepcionistasFiltrados() {
+      return this.usuarios.filter(usuario => usuario.permissao === 'Recepcionista');
+    },
+    // Retorna apenas usuários com permissão "Instrutor"
+    instrutoresFiltrados() {
+      return this.usuarios.filter(usuario => usuario.permissao === 'Instrutor');
+    }
+  },
   async mounted() {
-    // Ao carregar o componente, buscamos a lista de usuários para popular o dropdown
+    // Ao carregar o componente, buscamos a lista de usuários para popular os dropdowns
     await this.fetchUsuarios();
   },
   methods: {
@@ -89,6 +106,40 @@ export const CriarPolo = {
         horarios: []
       });
     },
+    // Método para abrir o modal de confirmação de exclusão
+    openDeleteConfirmationModal(title, message, callback, args = []) {
+      // O 'title' não será exibido no template, mas é mantido por consistência
+      this.deleteConfirmationTitle = title;
+      this.deleteConfirmationMessage = message;
+      this.deleteConfirmationCallback = callback;
+      this.deleteConfirmationArgs = args;
+      this.showDeleteConfirmationModal = true;
+    },
+    // Método para confirmar a ação de exclusão
+    confirmDeleteAction() {
+      if (this.deleteConfirmationCallback) {
+        this.deleteConfirmationCallback(...this.deleteConfirmationArgs);
+      }
+      this.closeDeleteConfirmationModal();
+    },
+    // Método para fechar o modal de confirmação de exclusão
+    closeDeleteConfirmationModal() {
+      this.showDeleteConfirmationModal = false;
+      this.deleteConfirmationTitle = '';
+      this.deleteConfirmationMessage = '';
+      this.deleteConfirmationCallback = null;
+      this.deleteConfirmationArgs = [];
+    },
+    // Método para remover uma aula (chamado após confirmação do modal)
+    doRemoveAula(index) {
+      this.polo.aulasDisponiveis.splice(index, 1);
+      this.mensagemFeedback = 'Aula removida com sucesso!';
+      this.mensagemTipo = 'sucesso';
+    },
+    // Método para remover uma aula (abre o modal de confirmação)
+    removerAula(index) {
+      this.openDeleteConfirmationModal('Remover Aula?', 'Tem certeza que deseja remover esta aula e todos os seus horários?', this.doRemoveAula, [index]);
+    },
     adicionarHorario(index) {
       // Adiciona um novo horário para a aula no índice especificado
       this.polo.aulasDisponiveis[index].horarios.push({
@@ -97,11 +148,31 @@ export const CriarPolo = {
         professor: null // Inicializa com null para o dropdown
       });
     },
+    // Método para remover um horário específico de uma aula (chamado após confirmação do modal)
+    doRemoveHorario(aulaIndex, horarioIndex) {
+      this.polo.aulasDisponiveis[aulaIndex].horarios.splice(horarioIndex, 1);
+      this.mensagemFeedback = 'Horário removido com sucesso!';
+      this.mensagemTipo = 'sucesso';
+    },
+    // Método para remover um horário específico de uma aula (abre o modal de confirmação)
+    removerHorario(aulaIndex, horarioIndex) {
+      this.openDeleteConfirmationModal('Remover Horário?', 'Tem certeza que deseja remover este horário?', this.doRemoveHorario, [aulaIndex, horarioIndex]);
+    },
     adicionarPlano() {
       // Adiciona uma nova entrada de plano disponível
       this.polo.planosDisponiveis.push({
         nome: '', recorrencia: '', preco: ''
       });
+    },
+    // Método para remover um plano (chamado após confirmação do modal)
+    doRemovePlano(index) {
+      this.polo.planosDisponiveis.splice(index, 1);
+      this.mensagemFeedback = 'Plano removido com sucesso!';
+      this.mensagemTipo = 'sucesso';
+    },
+    // Método para remover um plano (abre o modal de confirmação)
+    removerPlano(index) {
+      this.openDeleteConfirmationModal('Remover Plano?', 'Tem certeza que deseja remover este plano?', this.doRemovePlano, [index]);
     },
     async enviarFormulario() {
       console.log('Dados enviados para o backend:', JSON.stringify(this.polo, null, 2));
@@ -123,10 +194,10 @@ export const CriarPolo = {
           this.mostrarConfirmacaoModal = true;
           console.log('Sucesso:', message);
         } else {
-          const errorText = await response.text(); // O backend retorna uma String de erro
-          this.mensagemFeedback = `Erro: ${errorText}`;
+          const errorData = await response.json(); // Se o backend retornar um JSON de erro
+          this.mensagemFeedback = `Erro: ${errorData.error || response.statusText}`;
           this.mensagemTipo = 'erro';
-          console.error('Erro ao criar polo:', errorText);
+          console.error('Erro ao criar polo:', errorData);
         }
       } catch (error) {
         this.mensagemFeedback = 'Erro na requisição: Não foi possível conectar ao servidor do polo.';
@@ -167,26 +238,26 @@ export const CriarPolo = {
       }
     },
     formatarPreco(index) {
-  let preco = this.polo.planosDisponiveis[index].preco;
+      let preco = this.polo.planosDisponiveis[index].preco;
 
-  // Remove tudo que não é número
-  preco = preco.replace(/\D/g, '');
+      // Remove tudo que não é número
+      preco = preco.replace(/\D/g, '');
 
-  // Converte para número com duas casas decimais
-  const numero = parseFloat(preco) / 100;
+      // Converte para número com duas casas decimais
+      const numero = parseFloat(preco) / 100;
 
-  // Formata como moeda brasileira
-  this.polo.planosDisponiveis[index].preco = numero.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
-},
+      // Formata como moeda brasileira
+      this.polo.planosDisponiveis[index].preco = numero.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    },
     // Método para fechar o modal de confirmação e redirecionar
     fecharConfirmacaoModal() {
-  this.mostrarConfirmacaoModal = false; // Esconde o modal
-  this.resetFormulario(); // Reseta o formulário
-  this.$router.push('/agendar'); // Redireciona para a página de agendamento
-}
+      this.mostrarConfirmacaoModal = false; // Esconde o modal
+      this.resetFormulario(); // Reseta o formulário
+      this.$router.push('/agendar'); // Redireciona para a página de agendamento
+    }
   },
   template: `
     <section class="criar-polo">
@@ -219,8 +290,8 @@ export const CriarPolo = {
         <div class="grupo">
           <h2>Usuário Responsável</h2>
           <select v-model="polo.idUsuario" required class="form-select">
-            <option :value="null" disabled>Selecione um Responsável</option>
-            <option v-for="usuario in usuarios" :key="usuario.idUsuario" :value="usuario.idUsuario">
+            <option :value="null" disabled>Selecione um Responsável (Recepcionista)</option>
+            <option v-for="usuario in recepcionistasFiltrados" :key="usuario.idUsuario" :value="usuario.idUsuario">
               {{ usuario.nome }} ({{ usuario.email }})
             </option>
           </select>
@@ -235,25 +306,30 @@ export const CriarPolo = {
         <div class="grupo">
           <h2>Aulas Disponíveis</h2>
           <div v-for="(aula, index) in polo.aulasDisponiveis" :key="index" class="aula-item">
-            <h3 class="subtitulo-item">Aula {{ index + 1 }}</h3>
+            <div class="aula-item-header">
+              <h3 class="subtitulo-item">Aula {{ index + 1 }} <button type="button" @click="removerAula(index)" class="action-button-remove-x"><i class="fi fi-rr-trash"></i></button></h3>
+            </div>
             <input type="text" v-model="aula.modalidade" placeholder="Modalidade" required class="form-input" />
             <select v-model="aula.diadasemana" required class="form-select">
               <option disabled value="">Dia da Semana</option>
               <option v-for="dia in diasDaSemana" :key="dia" :value="dia">{{ dia }}</option>
             </select>
+            
             <div v-for="(horario, i) in aula.horarios" :key="i" class="horario-item">
-              <h4 class="subtitulo-subitem">Horário {{ i + 1 }}</h4>
+              <div class="horario-item-header">
+                <h4 class="subtitulo-subitem">Horário {{ i + 1 }} <button type="button" @click="removerHorario(index, i)" class="action-button-remove-x"><i class="fi fi-rr-trash"></i></button></h4>
+              </div>
               <input type="time" v-model="horario.horaInicio" required class="form-input" />
               <input type="time" v-model="horario.horaFim" required class="form-input" />
               <!-- Campo Professor agora é um select -->
               <select v-model="horario.professor" required class="form-select">
-                <option :value="null" disabled>Selecione um Professor</option>
-                <option v-for="usuario in usuarios" :key="usuario.idUsuario" :value="usuario.nome">
+                <option :value="null" disabled>Selecione um Professor (Instrutor)</option>
+                <option v-for="usuario in instrutoresFiltrados" :key="usuario.idUsuario" :value="usuario.nome">
                   {{ usuario.nome }}
                 </option>
               </select>
             </div>
-            <button type="button" @click="adicionarHorario(index)" id="adicionar-horario">+ Adicionar Horário</button>
+            <button type="button" @click="adicionarHorario(index)" id="adicionar-horario"><i class="fi fi-rr-plus"></i> Adicionar Horário</button>
             <hr class="separator-item" v-if="aula.horarios.length > 0 && i < aula.horarios.length - 1"/>
           </div>
           <button type="button" @click="adicionarAula" class="action-button">+ Adicionar Aula</button>
@@ -268,14 +344,15 @@ export const CriarPolo = {
         <div class="grupo">
           <h2>Planos Disponíveis</h2>
           <div v-for="(plano, index) in polo.planosDisponiveis" :key="index" class="plano-item">
-            <h3 class="subtitulo-item">Plano {{ index + 1 }}</h3>
+            <div class="plano-item-header">
+              <h3 class="subtitulo-item">Plano {{ index + 1 }} <button type="button" @click="removerPlano(index)" class="action-button-remove-x"><i class="fi fi-rr-trash"></i></button></h3>
+            </div>
             <input type="text" v-model="plano.nome" placeholder="Nome do Plano" required class="form-input" />
             <select v-model="plano.recorrencia" required class="form-select">
               <option disabled value="">Recorrência</option>
               <option v-for="opcao in opcoesRecorrencia" :key="opcao" :value="opcao">{{ opcao }}</option>
             </select>
             <input type="text" v-model="plano.preco" placeholder="Preço" required class="form-input" @input="formatarPreco(index)" />
-
           </div>
           <button type="button" @click="adicionarPlano" class="action-button">+ Adicionar Plano</button>
         </div>
@@ -285,14 +362,26 @@ export const CriarPolo = {
       </div>
     </form>
 
-    <!-- Modal de Confirmação -->
-<div class="modal-overlay-polo" v-if="mostrarConfirmacaoModal">
-  <div class="modal-content-msg-polo">
-    <h2>Operação Concluída</h2>
-    <p>{{ mensagemFeedback }}</p>
-    <button @click="fecharConfirmacaoModal">Fechar</button>
-  </div>
-</div>
-  </section>
+    <!-- Modal de Confirmação (para envio do formulário) -->
+    <div class="modal-overlay-polo" v-if="mostrarConfirmacaoModal">
+      <div class="modal-content-msg-polo">
+        <h2>Operação Concluída</h2>
+        <p>{{ mensagemFeedback }}</p>
+        <button @click="fecharConfirmacaoModal">Fechar</button>
+      </div>
+    </div>
+
+    <!-- Novo Modal de Confirmação de Exclusão (Genérico com classes fixas) -->
+    <div class="users-modal-overlay" v-if="showDeleteConfirmationModal">
+      <div class="users-modal-content">
+        <p class="users-modal-icon-alert">!</p>
+        <p class="users-modal-text-confirm">{{ deleteConfirmationMessage }}</p>
+        <div class="users-modal-actions">
+          <button @click="confirmDeleteAction" class="users-btn-danger">Confirmar</button>
+          <button @click="closeDeleteConfirmationModal" class="users-btn-secondary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    </section>
   `
 };

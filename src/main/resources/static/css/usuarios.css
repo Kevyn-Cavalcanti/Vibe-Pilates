@@ -1,0 +1,331 @@
+/* Container principal da tela de gerenciamento de usuários */
+.users-page-container { /* Renomeado de .usuarios-section */
+  width: 90%; /* Ajusta a largura para ser responsiva */
+  max-width: 80rem; /* Limite máximo de largura para telas grandes */
+  margin: 2rem auto; /* Centraliza e adiciona margem superior/inferior */
+  padding: 2rem;
+  background: var(--secondary-color);
+  color: var(--white-color);
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Título da página */
+.users-page-title { /* Renomeado de .titulo */
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--white-color);
+  padding-bottom: 0.5rem;
+  color: var(--white-color);
+  text-align: center;
+}
+
+/* Mensagens de feedback (sucesso/erro) */
+.users-feedback-message { /* Renomeado de .mensagem-feedback */
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.users-feedback-message.success { /* Renomeado de .mensagem-feedback.sucesso */
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.users-feedback-message.error { /* Renomeado de .mensagem-feedback.erro */
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Mensagem de carregamento */
+.users-loading-message { /* Renomeado de .loading-message */
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-top: 3rem;
+}
+
+/* Estilos da tabela de usuários */
+.users-table-container { /* Renomeado de .tabela-usuarios-container */
+  overflow-x: auto; /* Adiciona scroll horizontal em telas pequenas */
+}
+
+.users-table { /* Renomeado de .tabela-usuarios */
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background-color: var(--black-color);
+  border-radius: 0.5rem;
+  overflow: hidden; /* Garante que o border-radius seja aplicado às bordas da tabela */
+}
+
+.users-table th,
+.users-table td { /* Renomeado de .tabela-usuarios th, .tabela-usuarios td */
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--complementary-color);
+  color: var(--white-color);
+  text-align: center;
+}
+
+.users-table th { /* Renomeado de .tabela-usuarios th */
+  background-color: var(--white-color);
+  color: var(--black-color);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+#th-nome, #td-nome {
+  text-align: start;
+}
+
+.users-table tbody tr:last-child td { /* Renomeado de .tabela-usuarios tbody tr:last-child td */
+  border-bottom: none; /* Remove a borda da última linha */
+}
+
+.users-table tbody tr:hover { /* Renomeado de .tabela-usuarios tbody tr:hover */
+  background-color: var(--complementary-color); /* Efeito hover nas linhas */
+}
+
+/* Estilos para as células de ações */
+.users-table-actions { /* Renomeado de .tabela-acoes */
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas pequenas */
+}
+
+/* Botões de ação da tabela (Editar e Excluir) */
+.users-action-button-edit, /* Renomeado de .action-button-edit */
+.users-action-button-delete { /* Renomeado de .action-button-delete */
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+  border: none;
+  font-weight: bold;
+}
+
+.users-action-button-edit { /* Renomeado de .action-button-edit */
+  background-color: var(--destaque-color);
+  color: var(--black-color);
+  border: 1.5px solid var(--destaque-color);
+}
+
+.users-action-button-edit:hover { /* Renomeado de .action-button-edit:hover */
+  border: 1.5px solid var(--complementary-color);
+}
+
+.users-action-button-delete { /* Renomeado de .action-button-delete */
+  background-color: var(--erro-color);
+  color: var(--white-color);
+}
+
+.users-action-button-delete:hover { /* Renomeado de .action-button-delete:hover */
+  background-color: var(--erro-color-hover);
+}
+
+/* Estilos para o formulário dentro dos modais (editar permissão) */
+.users-form-group { /* Renomeado de .form-group */
+  margin-bottom: 1rem;
+  text-align: left; /* Alinha labels à esquerda dentro do grupo */
+}
+
+.users-form-label { /* Renomeado de .form-label */
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--white-color);
+}
+
+.users-form-input, /* Renomeado de .form-input */
+.users-form-select { /* Renomeado de .form-select */
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: 1px solid var(--hover-color);
+  border-radius: 0.5rem;
+  background: var(--white-color);
+  color: var(--black-color);
+}
+
+/* Estilos para botões dentro dos modais */
+.users-modal-actions { /* Renomeado de .modal-actions */
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.users-btn-primary, /* Renomeado de .btn-primary */
+.users-btn-secondary, /* Renomeado de .btn-secondary */
+.users-btn-danger { /* Renomeado de .btn-danger */
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.users-btn-primary { /* Renomeado de .btn-primary */
+  background-color: var(--destaque-color);
+  border: 1.5px solid var(--destaque-color);
+  color: var(--black-color);
+}
+
+.users-btn-primary:hover { /* Renomeado de .btn-primary:hover */
+  border: 1.5px solid var(--secondary-color);
+}
+
+.users-btn-secondary { /* Renomeado de .btn-secondary */
+  background-color: var(--complementary-color);
+  color: var(--white-color);
+  border: 1.5px solid var(--complementary-color);
+}
+
+.users-btn-secondary:hover { /* Renomeado de .btn-secondary:hover */
+  border: 1.5px solid var(--secondary-color);
+}
+
+.users-btn-danger { /* Renomeado de .btn-danger */
+  background-color: var(--erro-color);
+  color: var(--white-color);
+}
+
+.users-btn-danger:hover { /* Renomeado de .btn-danger:hover */
+  background-color: var(--erro-color-hover);
+}
+
+/* Estilos específicos para o modal de exclusão */
+.users-modal-icon-alert { /* Renomeado de .modal-icon-alert */
+  font-size: 3rem;
+  color: var(--erro-color);
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.users-modal-text-confirm { /* Renomeado de .modal-text-confirm */
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--white-color);
+}
+
+/* Estilos para o Modal Overlay - Renomeado para evitar conflito */
+.users-modal-overlay { /* Renomeado de .modal-overlay */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.users-modal-content { /* Renomeado de .modal-content */
+  background-color: var(--secondary-color);
+  padding: 1.5rem; /* Ajustado para ser consistente */
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 500px; /* Ajustado para ser consistente */
+  width: 90%;
+  color: var(--white-color);
+}
+
+.users-modal-content h2,
+.users-modal-content h3 { /* Adicionado h3 aqui */
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--destaque-color);
+}
+
+.users-modal-content th p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.users-modal-text-confirm {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--white-color);
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+  .users-page-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .users-page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .users-table thead {
+    display: none; /* Esconde o cabeçalho da tabela em telas pequenas */
+  }
+
+  .users-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--complementary-color);
+    border-radius: 0.5rem;
+  }
+
+  .users-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px dashed var(--complementary-color);
+  }
+
+  .users-table td:last-child {
+    border-bottom: none;
+  }
+
+  .users-table td::before {
+    content: attr(data-label); /* Exibe o label da coluna antes do valor */
+    font-weight: bold;
+    margin-right: 0.5rem;
+    color: var(--destaque-color);
+  }
+
+  /* Ajusta as células de ação para serem visíveis e em linha */
+  .users-table-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--complementary-color); /* Adiciona uma linha divisória para ações */
+  }
+
+  .users-action-button-edit,
+  .users-action-button-delete {
+    width: 100%; /* Botões de ação ocupam a largura total em telas pequenas */
+    text-align: center;
+  }
+
+  .users-modal-content { /* Renomeado de .modal-content */
+    padding: 1.5rem;
+  }
+
+  .users-modal-content h2, .users-modal-content h3 { /* Renomeado de .modal-content h2, .modal-content h3 */
+    font-size: 1.5rem;
+  }
+
+  .users-modal-content p { /* Renomeado de .modal-content p */
+    font-size: 1rem;
+  }
+}
