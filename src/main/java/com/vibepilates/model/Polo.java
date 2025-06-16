@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vibepilates.model.embedded.AulaDisponivel;
+import com.vibepilates.model.embedded.Endereco;
+import com.vibepilates.model.embedded.PlanoPreco;
+
 @Document(collection = "polo")
 public class Polo {
 

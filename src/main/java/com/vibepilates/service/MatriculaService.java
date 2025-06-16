@@ -1,8 +1,8 @@
 package com.vibepilates.service;
 
 import com.vibepilates.model.Matrícula;
+import com.vibepilates.model.dto.MatriculaDTO;
 import com.vibepilates.repository.MatriculaRepository;
-import com.vibepilates.model.MatriculaDTO;
 
 import java.util.List;
 

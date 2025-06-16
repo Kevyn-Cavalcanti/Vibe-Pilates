@@ -1,4 +1,4 @@
-package com.vibepilates.model;
+package com.vibepilates.model.embedded;
 import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 

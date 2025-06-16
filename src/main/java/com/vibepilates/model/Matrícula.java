@@ -3,7 +3,8 @@ package com.vibepilates.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.vibepilates.model.MatriculaDTO.AulaSelecionadaDTO;
+import com.vibepilates.model.dto.MatriculaDTO.AulaSelecionadaDTO;
+import com.vibepilates.model.embedded.PlanoPreco;
 
 import java.util.List;
 

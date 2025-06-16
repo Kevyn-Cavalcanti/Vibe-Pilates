@@ -1,4 +1,5 @@
-package com.vibepilates.model;
+package com.vibepilates.chat.history;
+
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -6,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 @Document(collection = "mensagens_chat")
-public class MensagemChat {
+public class ChatMessageDocument {
 
     @Id
     private String idMensagemChat;
@@ -16,7 +17,7 @@ public class MensagemChat {
     private String mensagem;
     private Date dataHora;
 
-    public MensagemChat() {
+    public ChatMessageDocument() {
     }
 
     public String getIdMensagemChat() {

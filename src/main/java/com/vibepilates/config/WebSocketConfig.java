@@ -1,4 +1,4 @@
-package com.vibepilates;
+package com.vibepilates.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;

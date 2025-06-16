@@ -1,5 +1,7 @@
-package com.vibepilates.model;
+package com.vibepilates.model.dto;
 import java.util.List;
+
+import com.vibepilates.model.embedded.PlanoPreco;
 
 public class MatriculaDTO {
 

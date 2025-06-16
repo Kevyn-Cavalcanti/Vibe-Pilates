@@ -1,4 +1,4 @@
-package com.vibepilates.model;
+package com.vibepilates.model.embedded;
 import java.util.List;
 
 public class AulaDisponivel {

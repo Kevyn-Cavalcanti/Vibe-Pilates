@@ -1,6 +1,6 @@
-package com.vibepilates.model;
+package com.vibepilates.chat.websocket;
 
-public class ChatMessage {
+public class ChatSocketMessage {
 	private String sender;
     private String recipient;
     private String content;

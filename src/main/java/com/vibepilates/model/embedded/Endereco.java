@@ -1,4 +1,4 @@
-package com.vibepilates.model;
+package com.vibepilates.model.embedded;
 
 public class Endereco {
     private String rua;

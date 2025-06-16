@@ -1,8 +1,8 @@
 package com.vibepilates.controller;
 
-import com.vibepilates.model.MatriculaDTO;
 import com.vibepilates.model.Matrícula;
 import com.vibepilates.model.Usuario;
+import com.vibepilates.model.dto.MatriculaDTO;
 import com.vibepilates.repository.MatriculaRepository;
 import com.vibepilates.repository.UsuarioRepository;
 import com.vibepilates.service.MatriculaService;

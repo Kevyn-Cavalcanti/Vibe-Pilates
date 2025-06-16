@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vibepilates.model.embedded.Endereco;
+
 @Document(collection = "usuarios")
 public class Usuario {
 

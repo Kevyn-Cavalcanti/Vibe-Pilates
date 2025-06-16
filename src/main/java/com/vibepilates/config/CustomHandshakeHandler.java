@@ -1,4 +1,4 @@
-package com.vibepilates;
+package com.vibepilates.config;
 
 import java.security.Principal;
 import java.util.Map;

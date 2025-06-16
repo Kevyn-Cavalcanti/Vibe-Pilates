@@ -1,7 +1,8 @@
-package com.vibepilates.controller;
+package com.vibepilates.chat.websocket;
 
-import com.vibepilates.model.ChatMessage;
-import com.vibepilates.service.UserService;
+
+import com.vibepilates.chat.websocket.ChatSocketMessage;
+import com.vibepilates.chat.websocket.WebSocketUserService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -11,17 +12,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
-public class ChatController {
+public class WebSocketChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final UserService userService;
+    private final WebSocketUserService userService;
 
-    public ChatController(SimpMessagingTemplate messagingTemplate, UserService userService) {
+    public WebSocketChatController(SimpMessagingTemplate messagingTemplate, WebSocketUserService userService) {
         this.messagingTemplate = messagingTemplate;
         this.userService = userService;
     }
     @MessageMapping("/chat.addUser")
-    public void addUser(@Payload ChatMessage chatMessage,
+    public void addUser(@Payload ChatSocketMessage chatMessage,
                         SimpMessageHeaderAccessor headerAccessor) {
 
         String username = chatMessage.getSender();
@@ -41,7 +42,7 @@ public class ChatController {
         }
     }
     @MessageMapping("/chat.privateMessage")
-    public void sendPrivateMessage(@Payload ChatMessage message) {
+    public void sendPrivateMessage(@Payload ChatSocketMessage message) {
         String sender = message.getSender();
         String recipient = message.getRecipient();
         String content = message.getContent();

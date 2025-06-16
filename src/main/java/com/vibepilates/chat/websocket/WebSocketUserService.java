@@ -1,11 +1,12 @@
-package com.vibepilates.service;
+package com.vibepilates.chat.websocket;
+
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class WebSocketUserService {
     private final Set<String> connectedUsers = ConcurrentHashMap.newKeySet();
 
     public void addUser(String username) {
